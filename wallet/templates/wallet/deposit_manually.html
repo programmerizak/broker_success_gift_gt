@@ -1,0 +1,496 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+
+    <style>
+      .content{
+        position: relative;
+        margin-top: 50px;
+        padding: 35px;
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+      }
+      .content .content-inner{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+      }
+      .content .content-inner .txt{
+        position: relative;
+      }
+      .content .content-inner .txt h4{
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--yellow-color);
+        color: #fff;
+        border: 3px solid var(--blue-dark-fourth-color);
+        margin-bottom: 25px;
+      }
+      .container-cont .txt{
+        width: 500px;
+        display: flex;
+        margin-bottom: 50px;
+
+      }
+      .container-cont #txtHide{
+        display: none;
+      }
+      .container-cont #txtHide{
+        display: none;
+      }
+      .container-cont .txt h5{
+        font-weight: 500;
+      }
+      .container-cont .net{
+        width: 500px;
+        position: relative;
+      }
+      .container-cont .net input{
+        background-color: transparent;
+        outline: none;
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+        font-size: 0.9rem;
+        padding: 10px;
+        color: var(--first-text-color);
+        margin-top: 10px;
+        margin-bottom: 25px;
+      }
+      .container-cont .net button{
+        background-color: var(--yellow-color);
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        padding: 10px 15px;
+        margin: 40px 0;
+        cursor: pointer;
+        color:#000;
+        transition: var(----transition);
+      }
+      .container-cont .net button:hover{
+        background-color: var(-yellow-second-color);
+      }
+      .container-cont .net h5{
+        margin-bottom: 20px;
+      }
+      .container-cont .net .hero-input-selects{
+        width: 400px;
+        margin-bottom: 30px;
+        padding: 0;
+      }
+      .container-cont .net .hero-input-selects li{
+        list-style: none;
+        cursor: pointer;
+        padding: 10px 5px;
+      }
+      .container-cont .inner-ad{
+        width: 400px;
+        position: relative;
+        overflow: visible;
+      }
+      .container-cont .icon{
+        position: relative;
+      }
+      .container-cont .icon i{
+        cursor: pointer;
+      }
+      .container-cont .icon img{
+        position: absolute;
+        top: 0px;
+        left: 60px;
+        background-color: var(--white-color);
+        padding: 15px;
+        border-radius: 5px;
+        display: none;
+      }
+      .container-cont .icon img.bar{
+        display: block;
+      }
+      .container-one .table-setup ul{
+        text-align: center;
+        grid-template-columns: 2fr 1fr 2fr 2fr 2fr 1fr;
+        padding: 20px 0;
+        cursor: pointer;
+      }
+      .container-one .table-setup ul:hover{
+        background-color: var(--blue-dark-fourth-color);
+      }
+      .container-one .table-setup ul .fclick{
+        transition: var(--transition);
+        cursor: pointer;
+        z-index: 2;
+      }
+      .container-one .table-setup ul:hover .fclick{
+        background-color: transparent;
+      }
+      .container-one .table-setup ul .li-in{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .search {
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+      }
+      .search input {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 0.9rem;
+        margin-left: 0px;
+        margin-right: 10px;
+        color: var(--first-text-color);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        pointer-events: none;
+      }
+      .search, .chev i {
+        padding: 5px;
+        transition: var(--transition);
+      }
+      .chevBB{
+        margin-left: 10px;
+        transition: var(--transition);
+        cursor: pointer;
+      }
+      .chevBB:hover{
+        color: var(--yellow-color);
+      }
+      .search .icon{
+        position: absolute;
+        right: 0;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+      }
+      .search i:hover, .chev i:hover {
+        color: var(--yellow-color);
+      }
+      .search .fa-link{
+        margin-right: 10px;
+      }
+      .container-one .table-setup h5{
+        color: var(--first-text-color);
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+      .container-one .table-setup h5.com{
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 5px;
+        color: var(--green-color);
+        background-color: #1b6d4b38;
+      }
+
+      /* Modal */
+      .modal{
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-color: #131722ab;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        z-index: -9999;
+        opacity: 0;
+        transition: var(--transition);
+      }
+      .modal.active{
+        z-index: 5555555;
+        opacity: 1;
+      }
+      .modal .dark{
+        position: absolute;
+        top: 0;
+        left:  0;
+        width: 100%;
+        height: 100vh;
+        background-color: transparent;
+        z-index: -1;
+      }
+      .modal .modal-content{
+        padding: 20px;
+        background-color: var(--purple-color);
+        border-radius: 5px;
+        width: 650px;
+        height: fit-content;
+      }
+      .modal .modal-content::-webkit-scrollbar{
+        display: none;
+      }
+      .modal .modal-content h3{
+        color: var(--yellow-color);
+      }
+      .modal .modal-content h5{
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      .modal .modal-content .stat{
+        margin-top: 25px;
+      }
+      .modal .modal-content h5.first{
+        color: rgb(141, 141, 141);
+        margin-bottom: 5px;
+      }
+      .modal .modal-content h5.com{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--green-color);
+        background-color: #1b6d4b38;
+      }
+      .modal .modal-content .search {
+        width: 100%;
+      }
+      .modal .modal-content .search input {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 10px;
+        pointer-events: auto;
+      }
+      .modal .modal-content .search i{
+        cursor: pointer;
+
+      }
+      .modal .close{
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        z-index: 1;
+        font-size: 2.2rem;
+        cursor: pointer;
+      }
+
+
+      @media only screen and (max-width: 992px){
+        .content{
+            padding: 0;
+        }
+        .content .content-inner{
+            grid-template-columns: subgrid;
+        }
+        .content .content-inner .txt{
+            padding: 35px;
+            border-bottom: 1px solid var(--blue-dark-fourth-color);
+        }
+        .content .content-inner .txt:last-child{
+            border: none;
+        }
+        .content .content-inner hr{
+            display: none;
+        }
+        .container-one .table-setup ul{
+            grid-template-columns: subgrid;
+            padding-left: 10px;
+            text-align: left;
+            padding-top: 30px;
+        }
+        .container-one .table-setup ul li{
+            margin-bottom: 30px;
+        }
+        .container-one .table-setup ul .li-in{
+            justify-content: flex-start;
+        }
+        .container-one .search{
+            width: 150px;
+        }
+        .search .icon{
+            position: relative;
+        }
+      }
+
+      @media only screen and (max-width: 768px){
+        .container-cont .icon img{
+            top: 30px;
+            left: -120px;
+        }
+        .container-cont .net{
+          width: fit-content;
+        }
+      }
+
+      @media only screen and (max-width: 578px){
+        .container-cont .txt{
+            flex-direction: column;
+        }
+        .container-cont .txt .txt-inner{
+            margin-bottom: 30px;
+        }
+        .container-cont .net .hero-input-selects,
+        .container-cont .inner-ad{
+            width: 100%;
+        }
+        .container-cont .inner-ad{
+            padding-right: 15px;
+        }
+      }
+    </style>
+
+    <!-- container-one start -->
+    <div class="container-one">
+        <div class="container-fluid">
+            <h2>Deposit {{wallet.currency.symbol}}</h2>
+
+            <div class="content">
+                <div class="content-inner">
+                    <hr style="border:2px solid var(--yellow-color);position: absolute;top: 60px;left: 40px;width: 76%;">
+                    
+                    <div class="txt">
+                        <h4>1</h4>
+                        <h3>Copy address</h3>
+                        <p>Copy to the wallet address or the barcode showed below. </p>
+                    </div>
+
+                    <div class="txt">
+                        <h4>2</h4>
+                        <h3>Pay to the address</h3>
+                        <p></p>
+                    </div>
+
+                    <div class="txt">
+                        <h4>3</h4>
+                        <h3>Network confirmation</h3>
+                        <p>Wait for our system to confirm your transfer.</p>
+                    </div>
+
+                    <div class="txt">
+                        <h4>4</h4>
+                        <h3>Deposit successful</h3>
+                        <p>After the network confirmation, our system will credit the crypto for you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- container one end -->
+
+    <!-- container-cont start -->
+    <div class="container-cont">
+        <div class="container-fluid">
+            <div class="txt">
+                <div class="txt-inner" style="width: 160px;">
+                    <p>Coin</p>
+                    <h5>{{wallet.currency.name}}</h5>
+                </div>
+                <div class="txt-inner">
+                    <p>Symbol</p>
+                    <h5>{{wallet.currency.symbol}}</h5>
+                </div>
+            </div>
+
+            <div class="net">
+                <div>
+                    <h2>Manual Deposit for {{ wallet.currency.name }}</h2>
+                    <button id="generate-address-button">Generate Deposit Address</button>
+
+                    <div id="deposit-info" style="display:none;">
+                        <p id="deposit-address"></p>
+                        <img id="qrcode" alt="QR Code">
+                    </div>
+
+                    <script>
+                        document.getElementById('generate-address-button').addEventListener('click', async function() {
+                            const walletId = '{{ wallet.id }}';  // Fetch the wallet ID from the template context
+                            const currencySymbol = '{{ wallet.currency.symbol }}'; // Fetch the currency symbol from the template context
+
+                            // Debugging information
+                            console.log(`Sending wallet_id: ${walletId}`);
+                            console.log(`Sending currency_symbol: ${currencySymbol}`);
+
+                            try {
+                                const response = await fetch("{% url 'wallet:generate_deposit_address' %}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': '{{ csrf_token }}'
+                                    },
+                                    body: JSON.stringify({
+                                        wallet_id: walletId,
+                                        currency_symbol: currencySymbol
+                                    })
+                                });
+
+                                const data = await response.json();
+
+                                if (data.deposit_address) {
+                                    const depositAddress = data.deposit_address;
+                                    
+                                    document.getElementById('deposit-info').style.display = 'block';
+                                    document.getElementById('deposit-address').innerText = `Deposit Address: ${depositAddress}`;
+                                    
+                                    // Generate QR code
+                                    QRCode.toDataURL(depositAddress, function (err, url) {
+                                        if (!err) {
+                                            document.getElementById('qrcode').src = url;
+                                        }
+                                    });
+                                } else {
+                                    throw new Error("Deposit address not received");
+                                }
+                            } catch (error) {
+                                console.error("Failed to generate deposit address", error);
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Failed to generate deposit address. Please try again.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+
+            <div class="txt">
+                <div class="txt-inner" style="width: 160px;">
+                    <p>Deposit Fee</p>
+                    <h5>{{wallet.currency.percentage_deposit_fee}}%</h5>
+                </div>
+                <div class="txt-inner">
+                    <p>Minimum deposit</p>
+                    <h5>{{wallet.currency.minimum_deposit}}</h5>
+                </div>
+            </div>
+
+            <div class="note" style="margin-top: 60px;">
+                <p>Notes:</p>
+                <li style="font-size: 0.9rem;margin-top: 15px;">Send only <span style="color: var(--red-color);">{{wallet.currency.symbol}}</span> to this wallet address</li>
+            </div>
+        </div>
+    </div>
+    <!-- container-cont end -->
+
+    <!-- container-one start -->
+    {% include 'wallet/deposit_history.html' %}
+    <!-- container one end -->
+
+    <script>
+        var myInp99 = document.getElementById("myInp99");
+        var copy99 = document.getElementById("copy99");
+
+        // copy to clipboard
+        copy99.onclick = function () {
+            myInp99.select();
+            document.execCommand("Copy");
+            alert("Copied!");
+        }
+    </script>
+{% endblock content %}

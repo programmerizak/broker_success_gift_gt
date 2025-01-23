@@ -1,0 +1,973 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+
+
+
+{% block content %}
+
+
+
+    <style>
+        .grid-row{
+            display: grid;
+            grid-template-columns: 70% 30%;
+            gap: 10px;
+
+        }
+        .grid-row .grid-one{
+            border: 1px solid var(--purple-color);
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .grid-row .grid-one .image{
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .grid-row .grid-one .txt{
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--purple-color);
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+        }
+        .grid-row .grid-one .image img{
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 5px;
+        }
+        .grid-row .grid-one .txt .topp{
+            margin-bottom: 10px;
+        }
+        .grid-row .grid-one .op{
+            margin-top: 30px;
+            border-bottom: 1px solid var(--purple-color);
+        }
+        .grid-row .grid-one .op span{
+            position: relative;
+            display: inline-block;
+        }
+        .grid-row .grid-one .op span::after{
+            content: "";
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: var(--blue-dark-color);
+            margin-top: 20px;
+        }
+        .widget-column{
+            margin-top: 30px;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 60% 40%;
+        }
+        .widget-column .wid-chart{
+            height: 450px;
+        }
+        .wid-txt{
+            position: relative;
+        }
+        .wid-txt ul,
+        .sec-body ul{
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            transition: var(--transition);
+            cursor: pointer;
+            padding: 5px;
+        }
+        .wid-txt ul:hover,
+        .sec-body ul:hover{
+            background-color: var(--purple-color);
+        }
+        .wid-txt ul li,
+        .sec-body ul li{
+            list-style: none;
+        }
+        .wid-txt .first-scr{
+            margin: 20px 0;
+            height: 160px;
+            overflow-y: auto;
+        } 
+        .sec-body .first-scr{
+            margin: 20px 0;
+            height: 230px;
+            overflow-y: auto;
+        }
+        .wid-txt .first-scr::-webkit-scrollbar,
+        .sec-body .first-scr::-webkit-scrollbar{
+            display: none;
+        }
+        .only-txt li{
+            list-style: none;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--purple-color);
+        }
+        .ul-l{
+            margin-top: 40px;
+        }
+        .ul-l ul{
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--purple-color);
+        }
+        .ul-l .top-tr{
+            border-bottom: none;
+        }
+        .ul-l p{
+            font-weight: 600;
+        }
+        .ul-l ul li{
+            list-style: none;
+        }
+        .ul-l .red{
+            display: none;
+        }
+        .log{
+            margin: 80px 0;
+            text-align: center;
+        }
+        .log span a{
+            color: var(--yellow-color);
+            transition: var(--transition);
+        }
+        .log span a:hover{
+            text-decoration: underline;
+        }
+        .grid-two{
+            padding: 0 10px;
+        }
+        .grid-two .top-but{
+            display: flex;
+            margin-bottom: 60px;
+        }
+        .grid-two .top-but button{
+            flex-basis: 50%;
+            padding: 15px 0;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            color: #fff;
+        }
+        .grid-two .top-but button.btn-1{
+            background-color: var(--green-second-color);
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+        .grid-two .top-but button.btn-1.active{
+            background-color: var(--purple-color);
+        }
+        .grid-two .top-but button.btn-2{
+            background-color: var(--purple-color);
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        .grid-two .top-but button.btn-2.active{
+            background-color: var(--red-second-color);
+        }
+        .grid-two .grid-two-inner{
+            position: relative;
+        }
+        .grid-two .posi-set.buy.show{
+            display: none;
+        }
+        .grid-two .posi-set.sell{
+            display: none;
+        }
+        .grid-two .posi-set.sell.show{
+            display: block;
+        }
+        .grid-two .sec-top{
+            border-bottom: 1px solid var(--purple-color);
+        }
+        .grid-two .sec-top span{
+            position: relative;
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .grid-two .sec-top span:hover{
+            color: #fff;
+        }
+        .grid-two .sec-top span.active::after{
+            content: "";
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #fff;
+            margin-top: 10px;
+        }
+        .grid-two .sec-body{
+            margin-top: 25px;
+        }
+        .grid-two .sec-body .txt-to{
+            display: flex;
+            justify-content: space-between;
+        }
+        .grid-two .limit-row-two,
+        .grid-two .limit-row-three,
+        .grid-two .limit-row-twoS,
+        .grid-two .limit-row-threeS{
+            display: none;
+        }
+        .grid-two .sec-body .input-box{
+            width: 100%;
+            margin-top: 10px;
+            padding: 15px;
+            background: var(--select-option);
+            border: 1px solid transparent;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+        }
+        .grid-two .sec-body .input-box:hover{
+            border-color: var(--yellow-color);
+        }
+        .grid-two .sec-body .input-box p{
+            cursor: default;
+            color: rgb(141, 141, 141);
+        }
+        .grid-two .sec-body .input-box input{
+            text-align: right;
+            color: #fff;
+            width: 60%;
+            background-color: transparent;
+            outline: none;
+            border: none;
+            position: absolute;
+            right: 70px;
+            padding-right: 5px
+        }
+        .grid-two .sec-body button.submit-btn{
+            padding: 15px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            color: #fff;
+            background-color: var(--green-second-color);
+            transition: var(--transition);
+        }
+        .grid-two .sec-body button.submit-btn:hover{
+            background-color: var(--green-color);
+        }
+        .grid-two .sec-body button.submit-btn-2{
+            background-color: var(--red-second-color);
+        }
+        .grid-two .sec-body button.submit-btn-2:hover{
+            background-color: var(--red-second-color);
+        }
+        .grid-two .sec-body .tra{
+            margin-top: 30px;
+            border-bottom: 1px solid var(--purple-color);
+        }
+        .grid-two .sec-body .tra span{
+            position: relative;
+            display: inline-block;
+        }
+        .grid-two .sec-body .tra span::after{
+            content: "";
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: var(--first-text-color);
+            margin-top: 20px;
+        }
+        .grid-two .progress{
+            position: relative;
+            margin: 40px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .grid-two .progress span{
+            position: relative;
+            display: block;
+            border-radius: 50%;
+            height: 15px;
+            width: 15px;
+            background-color: var(--select-option);
+        }
+        .grid-two .progress span.active{
+            background-color: var(--yellow-color);
+        }
+        .grid-two .progress span::before{
+            content: "";
+            display: block;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            height: 9px;
+            width: 9px;
+            border-radius: 50%;
+            background-color: var(--purple-color);
+
+        }
+        .grid-two .progress span.active::before{
+            background-color: var(--yellow-color);
+        }
+        .grid-two .progress .line{
+            position: absolute;
+            top: 50%;
+            height: 3px;
+            width: 100%;
+            background-color: var(--select-option);
+            z-index: -1;
+        }
+
+
+        @media only screen and (max-width: 992px){
+            .grid-row{
+                grid-template-columns: 100%;
+            }
+            .wid-txt ul,
+            .sec-body ul{
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .widget-column{
+                grid-template-columns: 50% 50%;
+            }
+        
+            .ul-l ul{
+              grid-template-columns: 100%;
+              padding: 20px;
+
+            }
+            .ul-l ul li{
+              margin-bottom: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            }
+            .ul-l .top-tr{
+                display: none;
+            }
+            .ul-l .red{
+                display: block;
+            }
+
+        } 
+
+        @media only screen and (max-width: 768px){
+            .grid-row .grid-one .txt {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .widget-column{
+                grid-template-columns: subgrid;
+            }
+            .wid-chart{
+                order: 2;
+            }
+            .wid-txt{
+                order: 1;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        } 
+        
+
+        @media only screen and (max-width: 578px){
+            .grid-row .grid-one .txt {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .wid-txt{
+                grid-template-columns: 1fr;
+            }
+            .wid-txt ul,
+            .sec-body ul{
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+
+        } 
+
+        @media only screen and (max-width: 350px){
+            .grid-row .grid-one .txt {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .wid-txt ul{
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+        } 
+            
+        
+
+    </style>
+
+    <!-- container-one start -->
+    <div class="container-one">
+        <div class="container-fluid">
+            <div class="grid-row">
+                <!-- grid one start -->
+                <div class="grid-one">
+
+
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
+    {
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500 Index"
+    },
+    {
+      "proName": "FOREXCOM:NSXUSD",
+      "title": "US 100 Cash CFD"
+    },
+    {
+      "proName": "FX_IDC:EURUSD",
+      "title": "EUR to USD"
+    },
+    {
+      "proName": "BITSTAMP:BTCUSD",
+      "title": "Bitcoin"
+    },
+    {
+      "proName": "BITSTAMP:ETHUSD",
+      "title": "Ethereum"
+    }
+  ],
+  "showSymbolLogo": true,
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "colorTheme": "dark",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+
+                    <!-- txt  start -->
+                    {% include "trade/partials/specific_wallet.html" %}
+                    <!-- txt end -->
+
+
+                    <!-- widget-column start -->
+                    <div class="widget-column">
+                        <div class="wid-chart">
+
+
+
+
+                            <div class="tradingview-widget-container" style="height:100%;width:100%">
+  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async></script>
+  <script>
+  {
+    "autosize": true,
+    "symbol": "BINANCE:BTCUSDT",
+    "interval": "D",
+    "timezone": "Etc/UTC",
+    "theme": "dark",
+    "style": "1",
+    "locale": "en",
+    "enable_publishing": false,
+    "allow_symbol_change": true,
+    "calendar": false,
+    "support_host": "https://www.tradingview.com"
+  }
+  </script>
+</div>
+
+
+
+
+
+                        </div>
+                        
+                        <div class="wid-txt">
+
+                            <div class="one">
+                                <ul>
+                                    <li><p>Amount</p></li>
+                                    <li><p>Payout</p></li>
+                                    <li><p>Status</p></li>
+                                </ul>
+                                <div class="first-scr">
+
+                                  <p style="text-align:center;">Sell Trades</p>
+
+                                  {% for sell_trade in sell_trades %}
+                                    <ul>
+                                        <li><p style="color: var(--red-second-color);">{{sell_trade.trading_amount}}</p></li>
+                                        <li><p>{{sell_trade.expected_payout}}</p></li>
+                                        <li><p>{{sell_trade.trade_status}}</p></li>
+                                    </ul>
+                                  {% empty %}
+                                     <p>Empty</p> 
+                                  {% endfor %}
+
+                                  
+                                  
+                                 
+                                </div>
+                            </div>
+
+                            <div class="two">
+                             
+
+                                <div class="first-scr">
+
+                                    <p style="text-align:center;">Buy Trades</p>
+
+                                    {% for buy_trade in buy_trades %}
+                                    <ul>
+                                        <li><p style="color: var(--green-second-color);">{{buy_trade.trading_amount}}</p></li>
+                                        <li><p>{{buy_trade.expected_payout}}</p></li>
+                                        <li><p>{{buy_trade.trade_status}}</p></li>
+                                    </ul> 
+                                    {% empty %}
+                                     <p>Empty</p>   
+                                    {% endfor %}
+                                    
+                                    
+                                   
+                                    
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- widget-column end -->
+
+                    <div class="op">
+                        <span style="font-weight: 500;">Open orders</span>
+                    </div>
+
+                    <div class="ul-l">
+                        <ul class="top-tr">
+                            <li><p>Date</p></li>
+                            <li><p>Pair</p></li>
+                            <li><p>Type</p></li>
+                            <li><p>Amount</p></li>
+                            <li><p>Payout</p></li>
+                            <li><p>Status</p></li>
+                        </ul>
+
+
+
+                        {% for trade in trades %}
+                        <ul>
+                            <li><p class="red">Date</p><h5>{{ trade.start_time|date:"Y-m-d" }} {{ trade.start_time|time:"H:i:s" }}</h5></li>
+                            <li><p class="red">Pair</p><h5>{{trade.trade_pair}}</h5></li>
+                            <li><p class="red">Type</p><h5>{{trade.trade_type}}</h5></li>
+                            <li><p class="red">Amount</p><h5>{{trade.trading_amount}}{{trade.wallet.currency.symbol}}</h5></li>
+                            <li><p class="red">Payout</p><h5>{{trade.expected_payout}} {{trade.wallet.currency.symbol}}</h5></li>
+                            <li><p class="red">Status</p><h5>{{trade.trade_status}}</h5></li>
+                        </ul>
+                        {% empty %}
+                            <ul>No Data Found</ul>
+                        {% endfor %}
+
+        
+
+                    </div>
+
+
+
+                </div>
+                <!-- grid one end -->
+
+
+                <!-- grid two start -->
+                <div class="grid-two">
+                    <div class="grid-two-inner">
+                        <div class="top-but">
+                            <button class="btn-1" onclick="buyBtn()"><span>Buy</span></button>
+                            <button class="btn-2" onclick="sellBtn()"><span>Sell</span></button>
+                        </div>
+
+                        <div class="pos-hom">
+                          <form action="{% url 'trade:place_a_trade' %}" method="POST">
+                            <!-- buy start -->
+                            <div class="posi-set buy">
+                                <!-- <div class="sec-top">
+                                    <span class="limA active" onclick="limOne()">Limit</span>
+                                    <span class="limB" onclick="limTwo()">Market</span>
+                                    <span class="limC" onclick="limThree()">Stop-Limit</span>
+                                </div> -->
+
+                                <div class="sec-body">
+
+
+
+
+
+                                    <!-- limit row start -->
+                                    <!-- <div class="limit-row-one"> -->
+                                      
+                                            {{form.trade_pair|as_crispy_field}}
+
+                                            {{form.trading_amount|as_crispy_field}}
+
+                                            {{form.strike_rate|as_crispy_field}}
+
+                                            {{form.duration|as_crispy_field}}
+                          
+                                    <!-- </div> -->
+
+
+
+
+                                    <!-- limit row end -->
+
+                                    <!-- limit row start -->
+                                    <!-- <div class="limit-row-two"> -->
+                                       <!--  {{form.trade_pair|as_crispy_field}}
+
+                                        {{form.trading_amount|as_crispy_field}}
+
+                                        {{form.strike_rate|as_crispy_field}}
+
+                                        {{form.duration|as_crispy_field}} -->
+                                    <!-- </div> -->
+                                    <!-- limit row end -->
+
+                                    <!-- limit row start -->
+                                    <!-- <div class="limit-row-three"> -->
+                                      <!--  {{form.trade_pair|as_crispy_field}}
+
+                                        {{form.trading_amount|as_crispy_field}}
+
+                                        {{form.strike_rate|as_crispy_field}}
+
+                                        {{form.duration|as_crispy_field}}
+                                         -->
+                                    <!-- </div> -->
+                                    <!-- limit row end -->
+
+
+                                    <!-- progress start -->
+                                    <div class="progress">
+                                        <span class="active"></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <div class="line"></div>
+                                    </div>
+                                    <!-- progress end -->
+
+                                    {% csrf_token %}
+                                    <!-- button submit start -->
+                                    <button type="submit" class="submit-btn" name="buy_btn">Buy </button>
+                                    <!-- button submit end -->
+
+                                    
+                                </div>
+                            </div>
+                            <!-- buy end -->
+                            </form>
+
+
+                            <form action="{% url 'trade:place_a_trade' %}" method="POST">
+                            <!-- sell start -->
+                            <div class="posi-set sell">
+                                <div class="sec-top">
+                                    <span class="limAS active" onclick="limOneS()">Limit</span>
+                                    <span class="limBS" onclick="limTwoS()">Market</span>
+                                    <span class="limCS" onclick="limThreeS()">Stop-Limit</span>
+                                </div>
+
+                                <div class="sec-body">
+
+                                    <!-- limit row start -->
+                                    <div class="limit-row-oneS">
+
+
+
+
+
+
+                                            {{form.trade_pair|as_crispy_field}}
+
+                                            {{form.trading_amount|as_crispy_field}}
+
+                                            {{form.strike_rate|as_crispy_field}}
+
+                                            {{form.duration|as_crispy_field}}
+                                        
+                                    </div>
+                                    <!-- limit row end -->
+
+                                    <!-- limit row start -->
+                                    <div class="limit-row-twoS">
+                                        <!-- {{form.trade_pair|as_crispy_field}}
+
+                                        {{form.trading_amount|as_crispy_field}}
+
+                                        {{form.strike_rate|as_crispy_field}}
+
+                                        {{form.duration|as_crispy_field}} -->
+                                    </div>
+                                    <!-- limit row end -->
+
+                                    <!-- limit row start -->
+                                    <div class="limit-row-threeS">
+                                        
+                                            <!-- {{form.trade_pair|as_crispy_field}}
+
+                                            {{form.trading_amount|as_crispy_field}}
+
+                                            {{form.strike_rate|as_crispy_field}}
+
+                                            {{form.duration|as_crispy_field}}
+                                        -->
+                                    </div>
+                                    <!-- limit row end -->
+
+
+                                    <!-- progress start -->
+                                    <div class="progress">
+                                        <span class="active"></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <div class="line"></div>
+                                    </div>
+                                    <!-- progress end -->
+
+                                    {% csrf_token %}
+                                    <!-- button submit start -->
+                                    <button type="submit" class=" submit-btn submit-btn-2" name="sell_btn">Sell</button>
+                                    <!-- button submit end -->
+                                    
+                                </div>
+                            </div>
+                            <!-- sell end -->
+                            </form>
+
+                        </div>
+
+
+                        <div class="sec-body">
+                        
+                            <div class="tra">
+                                <span style="font-weight: 500;">Market Trades</span>
+                            </div>
+
+                            <ul style="margin-top: 20px;">
+                                <li><p>Price </p></li>
+                                <li><p>Payout</p></li>
+                                <li><p>Time</p></li>
+                            </ul>
+                                
+                            <div class="first-scr">
+
+                                {% for trade in trades %}
+                                <ul>
+                                    <li><p style="color: var(--{{trade.color}}-second-color);">{{trade.trading_amount}}</p></li>
+                                    <li><p>{{trade.expected_payout}}</p></li>
+                                    <li><p>{{trade.start_time|time}}</p></li>
+                                </ul>
+                                {% empty %}
+                                    <p>Empty</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- grid two end -->
+            </div>
+        </div>
+    </div>
+    <!-- container-one end -->
+    
+
+
+
+
+
+
+
+
+    <!-- footer start -->
+    <footer style="padding: 30px 0; border-top: 1px solid var(--purple-color)">
+      <div class="container">
+        <div class="footer-4">
+          <p>Centralized Exchange Software © 2023</p>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script>
+      // Buy and Sell
+      var buy = document.querySelector('.buy');
+      var sell = document.querySelector('.sell');
+      var buybtn = document.querySelector('.btn-1');
+      var sellbtn = document.querySelector('.btn-2');
+
+      function buyBtn () {
+        buybtn.classList.remove('active');
+        sellbtn.classList.remove('active');
+        buy.classList.remove( 'show' );
+        sell.classList.remove('show');
+      }
+
+      function sellBtn () {
+        buybtn.classList.add('active');
+        sellbtn.classList.add('active');
+        buy.classList.add( 'show' );
+        sell.classList.add('show');
+      }
+
+
+    //   limit for buy
+    var limA = document.querySelector('.limA');
+    var limB= document.querySelector('.limB');
+    var limC = document.querySelector('.limC');
+    var lim1 = document.querySelector('.limit-row-one');
+    var lim2 = document.querySelector('.limit-row-two');
+    var lim3= document.querySelector('.limit-row-three');
+    
+    function limOne() {
+        if(limB.classList.contains("active")){
+            limA.classList.add('active');
+            limB.classList.remove('active');
+            limC.classList.remove('active');
+            lim1.style.display = "block";
+            lim2.style.display = "none";
+            lim3.style.display = "none";
+        }
+        if(limC.classList.contains("active")){
+            limA.classList.add('active');
+            limB.classList.remove('active');
+            limC.classList.remove('active');
+            lim1.style.display = "block";
+            lim2.style.display = "none";
+            lim3.style.display = "none";
+        }
+    }
+
+    function limTwo() {
+        if(limA.classList.contains("active")){
+            limA.classList.remove('active');
+            limB.classList.add('active');
+            limC.classList.remove('active');
+            lim1.style.display = "none";
+            lim2.style.display = "block";
+            lim3.style.display = "none";
+        }
+        if(limC.classList.contains("active")){
+            limA.classList.remove('active');
+            limB.classList.add('active');
+            limC.classList.remove('active');
+            lim1.style.display = "none";
+            lim2.style.display = "block";
+            lim3.style.display = "none";
+        }
+    }
+
+    function limThree() {
+        if(limA.classList.contains("active")){
+            limA.classList.remove('active');
+            limB.classList.remove('active');
+            limC.classList.add('active');
+            lim1.style.display = "none";
+            lim2.style.display = "none";
+            lim3.style.display = "block";
+        }
+        if(limB.classList.contains("active")){
+            limA.classList.remove('active');
+            limB.classList.remove('active');
+            limC.classList.add('active');
+            lim1.style.display = "none";
+            lim2.style.display = "none";
+            lim3.style.display = "block";
+        }
+    }
+
+
+    //   limit for sell
+    var limAS = document.querySelector('.limAS');
+    var limBS= document.querySelector('.limBS');
+    var limCS = document.querySelector('.limCS');
+    var lim1S = document.querySelector('.limit-row-oneS');
+    var lim2S = document.querySelector('.limit-row-twoS');
+    var lim3S= document.querySelector('.limit-row-threeS');
+    
+    function limOneS() {
+        if(limBS.classList.contains("active")){
+            limAS.classList.add('active');
+            limBS.classList.remove('active');
+            limCS.classList.remove('active');
+            lim1S.style.display = "block";
+            lim2S.style.display = "none";
+            lim3S.style.display = "none";
+        }
+        if(limCS.classList.contains("active")){
+            limAS.classList.add('active');
+            limBS.classList.remove('active');
+            limCS.classList.remove('active');
+            lim1S.style.display = "block";
+            lim2S.style.display = "none";
+            lim3S.style.display = "none";
+        }
+    }
+
+    function limTwoS() {
+        if(limAS.classList.contains("active")){
+            limAS.classList.remove('active');
+            limBS.classList.add('active');
+            limCS.classList.remove('active');
+            lim1S.style.display = "none";
+            lim2S.style.display = "block";
+            lim3S.style.display = "none";
+        }
+        if(limCS.classList.contains("active")){
+            limAS.classList.remove('active');
+            limBS.classList.add('active');
+            limCS.classList.remove('active');
+            lim1S.style.display = "none";
+            lim2S.style.display = "block";
+            lim3S.style.display = "none";
+        }
+    }
+
+    function limThreeS() {
+        if(limAS.classList.contains("active")){
+            limAS.classList.remove('active');
+            limBS.classList.remove('active');
+            limCS.classList.add('active');
+            lim1S.style.display = "none";
+            lim2S.style.display = "none";
+            lim3S.style.display = "block";
+        }
+        if(limBS.classList.contains("active")){
+            limAS.classList.remove('active');
+            limBS.classList.remove('active');
+            limCS.classList.add('active');
+            lim1S.style.display = "none";
+            lim2S.style.display = "none";
+            lim3S.style.display = "block";
+        }
+    }
+      
+      
+
+      
+    </script>
+
+   
+
+
+{% endblock content %}
+

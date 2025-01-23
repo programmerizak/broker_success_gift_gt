@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Deposit on {{ plan.plan_name }}</h2>
+<p><strong>Minimum Investment:</strong> ${{ plan.minimum }}</p>
+<p><strong>Maximum Investment:</strong> ${{ plan.maximum }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Deposit</button>
+</form>
+<a href="{% url 'plans:plan_detail' plan.id %}" class="btn btn-secondary">Back</a>
+{% endblock %}

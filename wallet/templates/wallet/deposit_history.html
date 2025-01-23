@@ -1,0 +1,65 @@
+{% load static %}
+
+
+    <!-- container-one start -->
+    <div class="container-one">
+        <div class="container-fluid">
+            <h4 style="margin: 150px 0 30px 0;">Recent Deposits</h4>
+
+            <div class="table-setup">
+
+
+                {% for deposit in wallet.deposits.all %}
+                <!-- ul -->
+                <ul class="ul">
+                    <li class="first">
+                        <div class="logo-img">
+                            <img src="{{deposit.wallet.currency.icon.url}}" alt="">
+                        </div>
+                        <div class="txt">
+                            <h5>{{deposit.amount}} {{deposit.wallet.currency.symbol}}</h5>
+                        </div>
+                    </li>
+                    <li style="text-align: left;"><h5 class="com">{{deposit.deposit_status}}</h5></li>
+
+                    {% if deposit.wallet_address_pay_to %}
+                        
+                    <li class="li-in">
+                        <h5>Address:</h5>
+                        <div class="search">
+                            <input id="myIn5" type="text" value="{{deposit.wallet_address_pay_to}}">
+                            <div class="icon">
+                                <i id="copy5" class="far fa-clone"></i>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+
+                    <li class="li-in">
+                        <h5>Tx:</h5>
+                        <div class="search">
+                            <input id="myInp6" type="text" value="{{deposit.transaction_id}}">
+                            <div class="icon">
+                                <a href="" style="color: var(--first-text-color);"><i class="fas fa-link"></i></a>
+                                <i id="copy6" class="far fa-clone"></i>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="li-in">
+                        <h5 style="margin-right: 5px;">Date:</h5>
+                        <h5 style="display: inline-block;text-align: left;">{{ deposit.date|date:"Y-m-d" }} <span style="margin-t: 5px;"> {{ deposit.date|time:"H:i:s" }}</span></h5>
+                    </li>
+                    <li><h5 class="chev"><i class="fas fa-chevron-right"></i></h5></li>
+
+                    <span class="fclick" onclick="openMod()"></span>
+                </ul>
+                <!-- ul -->
+                {% empty %}
+                    <h3>No Deposit made to this wallet</h3>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+    <!-- container one end -->
+

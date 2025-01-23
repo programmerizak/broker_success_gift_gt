@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+  .plan-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .plan-card {
+    border: 1px solid var(--purple-color);
+    border-radius: 10px;
+    padding: 20px;
+    background-color: var(--background-color);
+    transition: var(--transition);
+  }
+  .plan-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  .plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--purple-color);
+  }
+  .plan-header h3 {
+    color: var(--yellow-color);
+  }
+  .plan-details p {
+    margin: 10px 0;
+    color: var(--first-text-color);
+  }
+  .plan-details p span {
+    color: var(--white-color);
+  }
+  .plan-button button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--yellow-color);
+    color: #000;
+    font-weight: bold;
+  }
+  .plan-button button.disabled {
+    background-color: var(--gray-color);
+    cursor: not-allowed;
+  }
+  @media only screen and (max-width: 992px) {
+    .plan-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .plan-container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="container">
+  <h2>Available Plans</h2>
+
+  <div class="plan-container">
+    {% for plan in plans %}
+    <div class="plan-card">
+      <div class="plan-header">
+        <h3>{{ plan.plan_name }}</h3>
+        <span>Duration: {{ plan.duration }} days</span>
+      </div>
+
+      <div class="plan-details">
+        <p>Minimum Investment: <span>${{ plan.minimum }}</span></p>
+        <p>Maximum Investment: <span>${{ plan.maximum }}</span></p>
+        <p>ROI: <span>{{ plan.roi }}%</span></p>
+        <p>Capital back: <span>Yes</span></p>
+      </div>
+
+
+      <div class="plan-button">
+        {% if plan.id in user_plan_ids %}
+            <button class="btn-2" disabled>Subscribed</button>
+        {% else %}
+
+          
+            <a href="{{plan.get_absolute_url}}"><button>Subscribe</button></a>
+          
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <h1>No Plans Available</h1>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

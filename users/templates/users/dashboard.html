@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+<style>
+	.total{
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 30px;
+		margin: 40px 0 60px 0;
+		padding-bottom: 30px;
+		border-bottom: 1px solid #919191;
+	}	
+	.total .content{	
+		background: #5f54aa;
+		padding: 15px;
+		border-radius: 8px;
+		color: #fff;
+	}
+	.inner-grid{
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 60px 30px;
+		margin-top: 60px;
+	}
+	.inner-grid .content{	
+		background: #5f54aa;
+		padding: 15px;
+		border-radius: 8px;
+		color: #fff;
+		text-align: center;
+
+	}
+	.inner-grid .content h3{
+		font-weight: 700;
+	}
+	.inner-grid img{
+		height: 70px;
+		width: 70px;
+		object-fit: cover;
+		border-radius: 50%;
+		overflow: hidden;
+		background-color: #fff;
+		padding: 10px;
+		margin: -40px 0 10px 0;
+	}
+	@media(max-width: 992px){
+		.inner-grid{
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+	@media(max-width: 768px){
+		.inner-grid, .total{
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media(max-width: 576px){
+		.inner-grid, .total{
+			grid-template-columns: subgrid;
+		}
+	}
+</style>
+ <div class="container-fluid">
+    <h2>Dashboard</h2>
+	<h3>Welcome, {{user}} </h3>
+
+	<div class="total">
+		<div class="content">
+			<p>TOTAL BALANCE:</p>
+			<h2>${{total_value|floatformat:2}} USD</h2>
+			<!-- <p>USD</p> -->
+		</div>
+		<div class="content">
+			<p>LAST WITHDRAWAL :</p>
+			<h2>{{user.last_withdrawal}}</h2>
+			<!-- <p>Bitcoin</p> -->
+		</div><div class="content">
+			<p>LAST DEPOSIT :</p>
+			<h2>{{user.last_deposit}}</h2>
+			<!-- <p>Bitcoin</p> -->
+		</div>
+	</div>
+
+	<div class="inner-grid">
+
+		{% for wallet in wallets %}
+		<div class="content">
+			<div class="img-cover">
+				<img src="{{wallet.currency.icon.url}}" alt="">
+			</div>
+			
+			<h3>{{wallet.balance}}{{wallet.currency.symbol}}</h3>
+			<h4>{{wallet.currency.name}}</h4>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+    
+{% endblock content %}

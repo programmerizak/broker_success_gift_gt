@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+
+
+
+
+
+
+    <style>
+        .container-one .inner{
+            position: relative;
+            width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+        .container-one .inner h2{
+            margin-bottom: 60px;
+        }
+        .container-one .inner .img{
+            position: relative;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .container-one .inner .img img{
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+        .container-one .inner .inp input{
+            background-color: transparent;
+            border: none;
+            outline: none;
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--first-text-color);
+            padding: 5px 0;
+        }
+        .container-one .inner .inp input::placeholder{
+            font-size: 0.9rem;
+            color: var(--first-text-color);
+
+        }
+        .hero-input-selects{
+            padding: 0;
+            margin-bottom: 0;
+        }
+        .flex-ser{
+            position: relative;
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--blue-dark-thir-color);
+            padding: 0 10px 5px 0;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .flex-ser input{
+            text-align: right;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            width: 100%;
+        }
+        .flex-ser input::placeholder{
+            color: #fff;
+        }
+        .swap{
+            margin: 30px 0;
+            cursor: pointer;
+        }
+        .swap img{
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+        .select-input-wraps{
+            display: grid;
+            grid-template-columns: subgrid;
+        }
+        .select{
+            width: fit-content!important;
+            padding: 5px 10px!important;
+            border: none!important;
+        }
+        .services-list{
+            width: 250px;
+        }
+        .input-search-service input{
+            padding: 10px!important;
+            text-align: left!important;
+            background-color: transparent!important;
+            border: 1px solid var(--yellow-color)!important;
+        }
+        .hero-search-icon{
+            background-color: var(--blue-dark-color);
+            border: none;
+            cursor: not-allowed;
+        }
+        .hero-search-icon:hover{
+            background-color: var(--blue-dark-color);
+        }
+        .contain-form{
+            position: relative;
+            display: flex;
+            background-color: var(--purple-color);
+            align-items: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+        .contain-form .inp-inner{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+        }
+
+        .btn-get {
+            width: 100%;
+            background-color: var(--purple-second-color);
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+            color: var(--white-color);
+            padding: 15px 0;
+            border-radius: 5px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+        .amt{
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: var(--white-color);
+            text-align: right;
+            margin-left: 10px;
+            padding-right: 15px;
+            width: 90%;
+        }
+        .contain-form label{
+            font-size: 0.8rem;
+        }
+        .amtBT{
+            background-color: var(--purple-color);
+        }
+        .moot {
+            background-color: var(--purple-color);
+        }
+        .img-swap{
+            height: 40px;
+            width: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .btn-swap{
+            border: none;
+            outline: none;
+            background-color: transparent;
+            cursor: pointer;
+            margin: 50px 0;
+        }
+
+        @media screen and (max-width: 500px) {
+            .container-one .inner{
+                width: 90%;
+            }
+        }
+        
+    </style>
+
+
+
+
+    <!-- container-one start -->
+    <div class="container-one">
+        <div class="container-fluid">
+            <div class="inner">
+                <h2>Easy Swap</h2>
+
+
+          
+<form action="{% url 'wallet:swap' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="contain-form">
+        {{ form.from_coin|as_crispy_field }}
+       <div class="inp-inner">
+           {{ form.from_amount|as_crispy_field }}
+           <label for="amtR">Amount</label>
+       </div> 
+    </div>
+
+
+
+    <button class="btn-swap" type="submit">
+        <img class="img-swap" src="{% static 'images/swap.png' %}" alt="">
+    </button>
+
+
+    <div class="contain-form">
+        {{ form.to_coin|as_crispy_field }}
+       <div class="inp-inner">
+           {{ form.to_amount|as_crispy_field }}
+       </div> 
+    </div>
+
+
+    
+ 
+<!--     <button class="btn-get"
+        type="submit"
+        hx-post="{% url 'wallet:swap' %}" 
+        hx-target=".game"
+        hx-trigger="submit"
+        hx-swap="outerHTML"
+    >
+        GET RATE
+    </button>
+ -->
+
+
+</form>
+
+<!-- {% include "wallet/partials/rate.html" %} -->
+
+
+     
+            </div>
+        </div>
+    </div>
+    <!-- container-one end -->
+
+    
+
+
+
+
+
+
+
+
+{% endblock content %}

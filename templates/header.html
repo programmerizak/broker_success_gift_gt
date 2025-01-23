@@ -1,0 +1,74 @@
+{% load static %}
+    <!-- header start -->
+    <header class="header">
+        <!-- nav start -->
+        <nav class="container-fluid">
+            <div class="logo-ul">
+                <a href="{% url 'pages:home_page' %}"><img src="{% static 'images/logo-xtrade.png' %}" alt=""></a>
+                <ul id="ul">
+                    <a href="{% url 'users:dashboard' %}"><li {% if page_title == 'wallet List' %}class="active"{% endif %}>Dashboard</li></a>
+                    <a href="{% url 'trade:market_list' %}">
+                        <li 
+                        {% if page_title == 'Market list' %}class="active"{% endif %}
+                        >Markets</li>
+                    </a>
+
+                    <a href="{% url 'wallet:wallet_list' %}"><li {% if page_title == 'wallet List' %}class="active"{% endif %}>Wallets</li></a>
+
+                    <a href="{% url 'trade:place_a_trade' %}"><li {% if page_title == 'Place Trade' %}class="active"{% endif %}>Trade</li></a>
+
+                    <a href="{% url 'trade:orders' %}"><li {% if page_title == 'Orders' %}class="active"{% endif %}>Orders</li></a>
+
+                    <a href="{% url 'wallet:swap' %}"><li {% if page_title == 'Swap Coin' %}class="active"{% endif %}>Swap</li></a>
+
+                    <a href="{% url 'wallet:connect_options' %}"><li {% if page_title == 'Connect Options' %}class="active"{% endif %}>Connect Wallet</li></a>
+
+                    <a href="{% url 'launchpad:launchpad_list' %}"><li {% if page_title == 'Launch Pad' %}class="active"{% endif %}>Launchpads</li></a>
+
+                    <a href="{% url 'stake:available_coin' %}"><li {% if page_title == 'Available Coin' %}class="active"{% endif %}>Staking</li></a>
+
+                    <a href="{% url 'copy_trader:copy_trader' %}"><li  class="last">Copy Traders</li></a>
+
+
+                    
+                </ul>
+            </div>
+
+
+
+            <div class="pro">
+                <div class="toggle-bar" onclick="openToggle()">
+                    <div class="toggle" id="tog1"></div>
+                    <div class="toggle" id="tog2"></div>
+                    <!-- <div class="toggle" id="tog3"></div> -->
+                </div>
+                <div class="profile">
+                    <i class="fas fa-user-circle" id="proAdminBtn" onclick="openPro()"></i>
+                    <div class="pro-admin" id="proAdmin">
+
+
+                    	{% if user.is_authenticated %} 
+	                        <p>User:</p>
+	                        <P style="color: var(--yellow-color);">{{user.email}}</P>
+	                        <a href="{% url 'users:dashboard' %}"><li><i class="fas fa-user"></i> Dashboard</li></a>
+	                        <a href="{% url 'users:edit_profile' %}"><li><i class="fas fa-user"></i> Profile</li></a>
+	                        <a href="{% url 'trade:place_a_trade' %}"><li><i class="fas fa-lock"></i>Trade</li></a>
+	                        <a href="{% url 'kyc:kyc_form' %}"><li><i class="fas fa-lock"></i>Kyc</li></a>
+                            <a href="{% url 'account_change_password' %}"><li><i class="fas fa-lock"></i>Change Password</li></a>
+	                        <a href="{% url 'account_logout' %}"><li><i class="fas fa-sign-out-alt"></i> Logout</li></a>
+                        {% else %}
+                        	<a href="{% url 'account_login' %}"><li><i class="fas fa-lock"></i> Login</li></a>
+                        	<a href="{% url 'account_signup' %}"><li><i class="fas fa-sign-out-alt"></i> Register</li></a>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+                <div class="light-dark" onclick="themeMode()">
+                    <i class="fas fa-sun one"></i>
+                    <i class="fas fa-moon two"></i>
+                </div>
+            </div>
+        </nav>
+        <!-- nav end -->
+    </header>

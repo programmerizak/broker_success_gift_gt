@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<div class="">
+    <div class="row justify-content-center">
+        <div class="form-inner container-fluid">
+            <form method="POST" action="{% url 'account_login' %}" class="my-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form|crispy }}
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>
+            <p>New on our platform? <a href="{% url 'account_signup' %}">Create an account</a>.</p>
+            <p>Forgot your password? <a href="{% url 'account_reset_password' %}">Reset your password</a>.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-inner{
+        width: 500px;
+        margin: auto;
+        position: relative;
+    }
+    label, input{
+        width: 100%;
+    }
+    input, select, button{
+        display: inline-block;
+        width: 100%;
+        padding: 10px;
+        background-color: transparent;
+        outline: none;
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+        color: #fff;
+        margin-bottom: 25px;
+        margin-top: 10px;
+    }
+    input:focus{
+        border-color: var(--yellow-color);
+    }
+    button{
+        cursor: pointer;
+    }
+    button:hover{
+        background-color: var(--yellow-color);
+        color: #000;
+    }
+    input[type=checkbox]{
+        width: initial;
+        margin-top: 3px;
+        margin-right: 10px;
+    }
+    a{
+        color: var(--yellow-color);
+    }
+    @media (max-width: 768px){
+        .form-inner{
+            width: fit-content;
+        }
+    }
+</style>
+
+{% endblock content %}
+

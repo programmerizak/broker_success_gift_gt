@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+  <h1>{{ title }}</h1>
+
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+
+    <p>Wallet Balance: {{ wallet_balance }}</p>
+    {% if gas_fee %}
+      <p>Estimated Gas Fee: {{ gas_fee }}</p>
+      <p>Maximum Transferable Amount: {{ max_transferable }}</p>
+    {% else %}
+      <p>Unable to estimate gas fee at this time.</p>
+    {% endif %}
+
+    <button type="submit" class="default">Submit</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <style>
+        .tok-inner{
+            width: 670px;
+            position: relative;
+        }
+        .container-one h2{
+            margin-bottom: 80px;
+        }
+        .tok-inner .tok-image  img{
+            width: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .tok-inner .txt, 
+        .tok-inner .txt-2{
+            margin: 40px 0 50px 0;
+        }
+        .tok-inner .txt li{
+            list-style: none;
+            width: 100%;
+            border-bottom: 1px solid var(--purple-color);
+            padding: 7px 0;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .tok-inner .txt-2 li{
+            list-style: none;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .tok-inner .txt li h5{
+            color: #fff;
+        }
+        .tok-inner span{
+            display: inline-block;
+            width: 100%;
+        }
+        .tok-log{
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 0;
+            width: 50%;
+            color: #fff;
+            background-color: var(--purple-color);
+            text-align: center;
+            transition: var(--transition);
+            border-radius: 5px;
+            outline: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .tok-log:hover{
+            background-color: var(--yellow-color);
+            color: #000;
+        }
+        .blk{
+            margin-bottom: 40px;
+        }
+        .blk p{
+            margin-bottom: 10px;
+        }
+        
+        .blk button{
+            border: none;
+            outline: 0;
+            font-size: 1rem;
+            padding: 10px 25px;
+            border-radius: 2px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            color: #fff;
+            background-color: var(--blue-dark-thir-color);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .blk button:hover{
+            background-color: var(--purple-color);
+        }
+
+        .blk label{
+            font-size: 1rem;
+        }
+        .blk input{
+            outline: none;
+            width: 50%;
+            padding: 10px;
+            outline: none;
+            background-color: transparent;
+            border: 1px solid var(--purple-color);
+            border-radius: 5px;
+            color: #fff;   
+            margin-top: 10px; 
+            transition: var(--transition);
+        }
+        .blk input:focus{
+            border-color: var(--yellow-color);
+        }
+        .dur input{
+            margin-top: 15px;
+        }
+        input[type=radio]{
+            margin-right: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .tok-inner{
+                width: 100%;
+            }
+            .tok-log,
+            .blk input{
+                width: 100%;
+            }
+        }
+
+
+
+
+      
+    </style>
+
+
+    <style>
+        .asteriskField {
+        display: none;
+    }
+    </style>
+
+    <!-- container-one start -->
+    <div class="container-one">
+      <div class="container-fluid">
+        <h2>Staking {{plan.coin.symbol}}</h2>
+
+        <!-- tok-inner start -->
+        <div class="tok-inner">
+
+            <div class="tok-image">                
+                <div class="img">
+                    <img src="{% static 'images/staking.png' %}"
+                    alt="">
+                </div>
+            </div>
+
+            <div class="txt">
+                <ul>
+                    <li>
+                        <p>Coin</p>
+                        <h5>{{plan.coin.name}}</h5>
+                    </li>
+                    <li>
+                        <p>Symbol</p>
+                        <h5>{{plan.coin.symbol}}</h5>
+                    </li>
+                    <li>
+                        <p>Minimum buy amount</p>
+                        <h5>{{plan.minimum_stake_amount}} {{plan.coin.symbol}}</h5>
+                    </li>
+                    <li>
+                        <p>Maximum buy amount</p>
+                        <h5>{{plan.maximum_stake_amount}} {{plan.coin.symbol}}</h5>
+                    </li>
+                     
+
+                    {% for duration in plan.durations.all %}
+                    <li>
+                        <p>Est. APY {{duration.duration_days}} days</p>
+                        <h5 style="color: var(--green-color);">{{duration.percentage_return}} %</h5>
+                    </li>
+                    {% endfor %}
+
+
+                </ul>
+            </div>
+
+
+            <div class="txt-2">
+                <ul>
+                    <li>
+                        <p>Balance:</p>
+                        <h5>{{wallet.available_balance}} {{plan.coin.symbol}}</h5>
+                    </li>
+                    <li>
+                        <p>Estimated Interests:</p>
+                        <h5>0.00 {{plan.coin.symbol}}</h5>
+                    </li>
+                    <li>
+                        <p>Value Date:</p>
+                        <h5></h5>
+                    </li>
+                    <li>
+                        <p>Redemption Date:</p>
+                        <h5></h5>
+                    </li>
+                </ul>
+            </div>
+
+
+            <form method="POST" action="{% url 'stake:stake_now' plan.coin.symbol %}">
+             
+                <div class="blk">
+                    <label>Amount in {{plan.coin.symbol}} :</label> <br>
+                    {{form.stake_amount|as_crispy_field}}
+                </div>
+
+
+
+                <div class="dur">
+                    <label>Duration :</label> <br>
+                    {{form.duration|as_crispy_field}}
+                </div>
+
+
+                <button type="submit" class="tok-log">Stake</button>
+
+
+
+                {% csrf_token %}
+            </form>
+
+
+
+
+        </div>
+        <!-- tok-inner end -->
+        
+      </div>
+    </div>
+    <!-- container one end -->
+
+
+
+
+
+
+
+{% endblock content %}

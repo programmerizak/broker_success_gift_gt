@@ -1,0 +1,62 @@
+LINK TO PIP INSTALL : https://pypi.org/project/sweetify/
+
+pip install --upgrade sweetify
+
+
+### SETTINGS.PY
+
+INSTALLED_APPS = [
+    ...
+    'sweetify'
+]
+
+SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
+
+
+
+#########  base.html
+#######################
+
+{% load sweetify %}
+{% sweetify %}
+
+</body>
+</html>
+
+
+#############################################
+###### VIEWS.PY
+#############################################
+import sweetify
+
+# Base method with no type specified
+sweetify.sweetalert(self.request, 'Westworld is awesome', text='Really... if you have the chance - watch it!', persistent='I agree!')
+
+# Additional methods with the type already defined
+sweetify.info(self.request, 'Message sent', button='Ok', timer=3000)
+sweetify.success(self.request, 'You successfully changed your password')
+sweetify.error(self.request, 'Some error happened here - reload the site', persistent=':(')
+sweetify.warning(self.request, 'This is a warning... I guess')
+
+
+###################################
+####### TOAST MESSAGE
+########################
+import sweetify
+
+# Base method, default icon is set to success
+sweetify.toast(self.request, 'Cheers to new toast')
+
+sweetify.toast(self.request, 'Oops, something went wrong !', icon="error", timer=3000)
+sweetify.toast(self.request, 'Persistent toast that only goes away once clicked', icon='warning', persistent="Bye toast!")
+
+
+
+import sweetify
+
+def test_view(request):
+    args1 = dict(title='Test1', icon='info', text="Text placeholder1", button="Next")
+    args2 = dict(title='Test2', icon='success', text="Text placeholder2", timer=5000, timerProgressBar='true', persistent="Close")
+    sweetify.multiple(request, args1, args2)
+    return redirect('/')
+

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ plan.plan_name }}</h2>
+<p><strong>Minimum Investment:</strong> ${{ plan.minimum }}</p>
+<p><strong>Maximum Investment:</strong> ${{ plan.maximum }}</p>
+<p><strong>Duration:</strong> {{ plan.duration }} days</p>
+<p><strong>Return on Investment:</strong> {{ plan.roi_back }}%</p>
+<a href="{% url 'plans:deposit_on_plan' plan.id %}" class="btn btn-success">Deposit</a>
+{% endblock %}

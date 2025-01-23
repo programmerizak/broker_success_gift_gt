@@ -1,0 +1,76 @@
+{% load thumbnail %}
+
+      
+        <!-- txt  start -->
+        <div class="txt">
+            <div class="txt-inner">
+                <h5 style="color: var(--yellow-color);text-decoration: underline;">
+
+
+                <form id="wallet_form" hx-post="{% url 'trade:change_wallet' %}" hx-target=".txt" hx-trigger="submit" hx-swap="outerHTML">
+                    {% csrf_token %}
+                    <select class="select-btn" name="wallet_id">
+                        <option value="">Change Wallet</option>
+                        {% for wallet in user_wallets %}
+                        <option value="{{ wallet.id }}">{{ wallet.currency.symbol }} Wallet</option>
+                        {% endfor %}
+                    </select>
+                    <button  class="select-btn btn" type="submit">Change</button>
+                </form>
+
+                <style>
+                    .select-btn{
+                        padding: 7px 5px;
+                        background-color: var(--select-option);
+                        border: 1px solid transparent;
+                        border-radius: 5px;
+                        color: #fff;
+                        cursor: pointer; 
+                    }
+                    .select-btn.btn{
+                        background-color:  var(--yellow-color);
+                        color: #000;
+                    }                    
+                </style>
+
+
+
+                </h5>
+                <div class="image">
+                    <img src="{{wallet.currency.icon|thumbnail_url:'icon' }}" alt="">
+                    <h5 style="font-weight: 600;">{{wallet.currency.name}} Wallet</h5>
+                </div>
+            </div>
+
+            <div class="txt-inner">
+                <!-- <p class="topp">Last Price</p> -->
+                <p class="topp">Symbol</p>
+                <p style="color: var(--green-second-color);">{{wallet.currency.symbol}}</p>
+            </div>
+
+            <div class="txt-inner">
+                <!-- <p class="topp">24h Change</p> -->
+                <p class="topp">Balance</p>
+                <p style="color: var(--green-second-color);">{{wallet.balance}}</p>
+            </div>
+
+
+            <div class="txt-inner">
+                <!-- <p class="topp">24h High</p> -->
+                <p class="topp">In Orders </p>
+                <p>{{wallet.in_orders_balance}}</p>
+            </div>
+
+            <div class="txt-inner">
+                <!-- <p class="topp">24h Low</p> -->
+                <p class="topp">In Futures</p>
+                <p>{{wallet.in_futures_balance}}</p>
+            </div>
+
+            <div class="txt-inner">
+                <!-- <p class="topp">24h Volume</p> -->
+                <p class="topp">In Withdraw</p>
+                <p>{{wallet.in_withdraw_balance}}</p>
+            </div>
+        </div>
+        <!-- txt end -->

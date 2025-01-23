@@ -1,0 +1,35 @@
+{% load static %}
+
+	<div class="spot" id="spotOne">
+      <!-- spot-inner start -->
+      <div class="spot-inner">
+        {% for crypto in crypto_data %}
+        <!-- ul -->
+        <ul>
+          <li class="first">
+            <div class="start">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="logo-img">
+              <img src="{% static 'images/btc.png' %}" alt="" />
+            </div>
+            <div class="txt">
+              <h5>{{ crypto.code }} - {{base_asset}}</h5>
+            </div>
+          </li>
+          <li><h5>{{ crypto.rate }}</h5></li>
+       <!--    <li><h5 style="color: var(--green-second-color)">+2.87%</h5></li> -->
+          <li class="del"><h5>{{ crypto.volume }}</h5></li>
+          <li class="del"><h5>{{ crypto.cap }}</h5></li>
+          <li class="del"><h5>{{ crypto.delta.hour }}</h5></li>
+          <li class="del"><h5>{{ crypto.delta.day }}</h5></li>
+          <li class="del"><h5 class="trade"><a href="{% url 'market:market_detail' trade_asset=crypto.code base_asset=base_asset %}" style="color: var(--yellow-color);">Trade</a></h5></li>
+
+          <a href="{% url 'market:market_detail' trade_asset=crypto.code base_asset=base_asset %}" class="fclick"></a>
+        </ul>
+        <!-- ul -->
+        {% endfor %}
+      </div>
+      <!-- spot-inner end -->
+</div>
+

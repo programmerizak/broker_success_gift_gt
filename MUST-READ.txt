@@ -1,0 +1,28 @@
+Make sure you read about the API Documentation on 
+https://docs.coinapi.io
+
+Several resources can be useful to you:
+ * API Documentation: https://docs.coinapi.io/
+ * API SDK: https://github.com/coinapi/coinapi-sdk
+ * FAQ: https://www.coinapi.io/faq
+=============================================================================
+
+
+1. To generate currencies ==> python manage.py generate_currencies
+
+2. To generate random users ==> python manage.py generate_users
+
+
+"DEPOSIT"
+Owner can create several deposits on several dates and also select different deposit types
+like manual,online,pharse
+
+1. When owner of site withdraw money from the owner wallet since he has the 12/24 key phrase
+he will then create the deposit record and select deposit type as phrase
+
+
+
+####
+User can be set to win or loose stakes from the user model(stake outcome)
+User can be set to win or loose trades from the user model(trade outcome)
+

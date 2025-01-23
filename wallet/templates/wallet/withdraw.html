@@ -1,0 +1,437 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+
+    <style>
+      .container-cont .txt{
+        width: 500px;
+        display: flex;
+        margin-bottom: 50px;
+
+      }
+      .container-cont .txt h5{
+        font-weight: 500;
+      }
+      .container-cont .net{
+        width: 700px;
+        border: 1px solid var(--blue-dark-fourth-color);
+        padding: 30px;
+        border-radius: 5px;
+      }
+      .container-cont .net h5{
+        margin-bottom: 20px;
+      }
+      .container-cont .net select{
+        position: relative;
+        background-color: transparent;
+        padding: 10px 15px;
+        outline: none;
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+        color: var(--first-text-color);
+        font-size: 0.9rem;
+        width: 100%;
+        overflow: hidden;
+        cursor: pointer;
+        margin-bottom: 30px;
+      }
+      .container-cont .net option{
+        width: 100%;
+        background-color: var(--blue-dark-color);
+        outline: none;
+        color: #fff;
+        font-size: 0.9rem;
+      }
+      .container-cont .inpp{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+      .container-cont .inpp input, 
+      .container-cont .inpp button{
+        display: inline-block;
+        width: 100%;
+        padding: 15px;
+        outline: none;
+        background-color: transparent;
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+        color: #fff;
+        margin-top: 10px;
+      }
+      .container-cont .inpp button{
+        cursor: pointer;
+        background-color: var(--purple-second-color);
+        transition: var(--transition);
+        color: #fff;
+      }
+      .container-cont .inpp button:hover{
+        background-color: transparent;
+      }
+      .container-one .table-setup ul{
+        text-align: left;
+        grid-template-columns: 2fr 1fr 4fr 1fr 1fr;
+        padding: 20px 0;
+        cursor: pointer;
+      }
+      .container-one .table-setup ul:hover{
+        background-color: var(--blue-dark-fourth-color);
+      }
+      .container-one .table-setup ul .fclick{
+        transition: var(--transition);
+        cursor: pointer;
+        z-index: 2;
+      }
+      .container-one .table-setup ul:hover .fclick{
+        background-color: transparent;
+      }
+      .search {
+        display: flex;
+        align-items: center;
+        width: 80%;
+        overflow: hidden;
+      }
+      .search input {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 0.9rem;
+        margin-left: 10px;
+        color: var(--first-text-color);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        pointer-events: none;
+      }
+      .chev{
+        text-align: right;
+      }
+      .search, .chev i {
+        padding: 5px;
+        transition: var(--transition);
+      }
+      .search .icon{
+        position: absolute;
+        right: 50px;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+      }
+      .search i:hover, .chev i:hover {
+        color: var(--yellow-color);
+      }
+      .search .fa-link{
+        margin-right: 10px;
+      }
+      .container-one .table-setup h5{
+        color: var(--first-text-color);
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+      .container-one .table-setup h5.com{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--green-color);
+        background-color: #1b6d4b38;
+      }
+      .container-one .table-setup h5.com-pend{
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 5px;
+        color: var(--yellow-color);
+        background-color: #6d571b38;
+      }
+      .container-one .table-setup .red{
+        display: none;
+      }
+
+      /* Modal */
+      .modal{
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-color: #131722ab;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        z-index: -9999;
+        opacity: 0;
+        transition: var(--transition);
+      }
+      .modal.active{
+        z-index: 5555555;
+        opacity: 1;
+      }
+      .modal .dark{
+        position: absolute;
+        top: 0;
+        left:  0;
+        width: 100%;
+        height: 100vh;
+        background-color: transparent;
+        z-index: -1;
+      }
+      .modal .modal-content{
+        padding: 20px;
+        background-color: var(--purple-color);
+        border-radius: 5px;
+        width: 650px;
+        height: fit-content;
+      }
+      .modal .modal-content::-webkit-scrollbar{
+        display: none;
+      }
+      .modal .modal-content h3{
+        color: var(--yellow-color);
+      }
+      .modal .modal-content h5{
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      .modal .modal-content .stat{
+        margin-top: 25px;
+      }
+      .modal .modal-content h5.first{
+        color: rgb(141, 141, 141);
+        margin-bottom: 5px;
+      }
+      .modal .modal-content h5.com{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--green-color);
+        background-color: #1b6d4b38;
+      }
+      .modal .modal-content h5.com-pend{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--yellow-color);
+        background-color: #6d571b38;
+      }
+      .modal .modal-content .search {
+        width: 100%;
+      }
+      .modal .modal-content .search input {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 10px;
+        pointer-events: auto;
+      }
+      .modal .modal-content .search i{
+        cursor: pointer;
+
+      }
+      .modal .close{
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        z-index: 1;
+        font-size: 2.2rem;
+        cursor: pointer;
+      }
+
+
+      @media only screen and (max-width: 992px){
+        .container-one .table-setup ul{
+            grid-template-columns: 100%;
+            padding: 20px;
+
+        }
+        .container-one .table-setup ul li{
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .container-one .table-setup .red{
+            display: block;
+        }
+        .container-one .table-setup .top-tr{
+            display: none;
+        }
+        .container-one .search{
+            width: 100%;
+        }
+        .search .icon{
+            position: relative;
+            right: 0;
+        }
+        .container-cont .net{
+            width: 100%;
+        }
+      }
+
+      @media only screen and (max-width: 768px){
+        .container-cont .inpp{
+            grid-template-columns: subgrid;
+        }
+      }
+
+      @media only screen and (max-width: 578px){
+        .container-cont .txt{
+            flex-direction: column;
+        }
+        .container-cont .txt .txt-inner{
+            margin-bottom: 30px;
+        }
+      }
+
+      @media only screen and (max-width: 400px){
+        .container-one p{
+            font-size: 0.8rem;
+        }
+        .container-one .table-setup .logo-img{
+            height: 35px;
+            width: 35px;
+            margin: 0 10px;
+        }
+      }
+
+    </style>
+
+    <!-- container-one start -->
+    <div class="container-one">
+      <div class="container-fluid">
+        <h2>Withdraw {{wallet.currency.symbol}}</h2>        
+      </div>
+    </div>
+    <!-- container one end -->
+    
+
+
+    <!-- container-cont start -->
+    <div class="container-cont">
+        <div class="container-fluid">
+            <div class="txt">
+                <div class="txt-inner" style="width: 260px;">
+                    <p>Currency</p>
+                    <h5>{{wallet.currency.name}}</h5>
+                </div>
+                <div class="txt-inner">
+                    <p>Symbol</p>
+                    <h5>{{wallet.currency.symbol}}</h5>
+                </div>
+            </div>
+
+            <div class="txt">
+                <div class="txt-inner" style="width: 260px;">
+                    <p>Available Balance</p>
+                    <h5>{{wallet.balance}} {{wallet.currency.symbol}}</h5>
+                </div>
+                <div class="txt-inner">
+                   <p>Mimimum Withdraw Amount</p>
+                    <h5>1.0000  {{wallet.currency.symbol}}</h5>
+                </div>
+            </div>
+
+           
+            <form action="{{wallet.withdraw_url}}" method="POST">
+            <div class="net">
+            	{% csrf_token %}
+                <h5 style="">Network</h5>
+                {{form.withdrawal_network}}
+
+                <div class="inpp">
+                    <div class="inn">
+                        {{form.amount}}
+                    </div>
+                    <div class="inn">
+                        {{form.wallet_address}}
+                    </div>
+
+                    <div class="inn">
+                        <button type="submit">Request a withdrawal</button>
+                    </div>
+                </div>
+            </div>
+            </form>
+
+
+        </div>
+    </div>
+    <!-- container-cont end -->
+
+
+    <!-- container-one start -->
+    <div class="container-one">
+        <div class="container-fluid">
+            <h4 style="margin: 150px 0 30px 0;">Recent Withdrawals</h4>
+
+            <div class="table-setup">
+
+                <!-- ul -->
+                <ul class="top-tr">
+                    <li class="first"><p>Amount</p></li>
+                    <li><p>Status</p></li>
+                    <li><p>TXN</p></li>
+                    <li><p>Date</p></li>
+                    <li><p></p></li>
+                </ul>
+                <!-- ul -->
+
+
+
+
+
+
+
+
+                {% for withdraw in wallet.withdrawals.all %}
+                <!-- ul -->
+                <ul class="ul">
+                    <li>
+                        <p class="red">Amount</p>
+                        <div class="first">
+                            <div class="logo-img">
+                                <img src="{{wallet.currency.icon.url}}" alt="">
+                            </div>
+                            <div class="txt">
+                                <h5>{{withdraw.amount}} {{wallet.currency.symbol}}</h5>
+                            </div>
+                        </div>
+                    </li>
+                    <li><p class="red">Status</p><h5 class="com{{withdraw.color}}">{{withdraw.status}}</h5></li>
+
+					<li>
+                        <p class="red">TXN</p>
+                        <div class="search">
+                            <input id="myInp" type="text" value="{{withdraw.trx_id}}">
+                            <div class="icon">
+                                <i class="fas fa-link"></i>
+                                <i id="copy1" class="far fa-clone"></i>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <p class="red">Date</p>
+                        <h5>{{ withdraw.created_at|date:"Y-m-d" }} <span style="margin-t: 5px;"> {{ withdraw.created_at|time:"H:i:s" }}</span></h5>
+                    </li>
+                    <li><p class="red"></p><h5 class="chev"><i class="fas fa-chevron-right"></i></h5></li>
+
+                    <span class="fclick" onclick="openMod()"></span>
+                </ul>
+                <!-- ul -->
+                {% empty %}
+                    <h1>NO WITHDRAWAL MADE </h1>
+                {% endfor %}
+
+                
+            </div>
+        </div>
+    </div>
+    <!-- container one end -->
+
+{% endblock content %}

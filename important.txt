@@ -1,0 +1,7 @@
+# b4 running the following commands make sure your virtualenv is activated
+
+#Start the Celery Worker:
+#celery -A website worker --loglevel=info
+
+#Start the Celery Beat Scheduler:
+#celery -A website beat --loglevel=info

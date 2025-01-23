@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+    <title>{% block title %}{% if page_title %}{{ page_title }}-{% endif %}{{ site_name }}-{{tagline}}{% endblock %}</title>
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="keywords" content="{{ meta_keywords }}">
+    <meta name="author" content="{{ author }}">
+    <style>
+        .asteriskField {
+        display: none;
+    }
+    </style>
+
+    <!-- Font Awesome core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/logo-apex.png' %}">
+
+    <!-- swiper css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+    <!-- Include SweetAlert for alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Include QRCode.js for QR code generation -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+    <!-- Start Compulsory External Dependencies -->
+    <link rel="stylesheet" href="{% static 'hx_modal.css' %}">
+    <style>.asteriskField {display: none;}</style>
+    <script src="{% static 'hx.min.js' %}" defer></script>
+    <!-- End Compulsory External Dependencies -->
+
+</head>
+
+
+
+
+
+
+<body>
+
+    <!-- header start -->
+    {% include "header.html" %}
+        <!-- nav end -->
+
+
+        {% block content %}
+            
+        {% endblock content %}
+
+
+    <!-- footer start -->
+    {% include "footer.html" %}
+    <!-- footer end -->
+
+
+    <script src="{% static 'custom.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        // Typedjs
+
+        var typed = new Typed('.ani', 
+
+        {
+            strings: [
+
+                "Trusted",
+                "Secured",
+                "Fast",
+                "Reliable"
+            ],
+
+            typeSpeed: 100,
+            backSpeed: 100,
+            loop: true,
+        });
+
+    </script>
+
+    <!-- swiper js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        loop: true,
+        grabCursor: true,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        }
+      });
+    </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.5/sweetalert2.all.min.js"></script>
+
+{% load sweetify %}
+{% sweetify %}
+
+ <!-- LIVE CHAT -->
+<!--Start of Tawk.to Script-->
+<!-- <script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/678adf64825083258e070724/1ihr7h8jd';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script> -->
+<!--End of Tawk.to Script-->
+
+</body>
+</html>

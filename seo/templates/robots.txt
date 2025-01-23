@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /user/
+
+User-agent: Googlebot
+Disallow: /private/
+
+Sitemap: http://example.com/sitemap.xml
+Crawl-delay: 10

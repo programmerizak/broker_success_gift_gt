@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load account %}
+{% load crispy_forms_tags %}
+
+    {% if user.is_authenticated %}
+    {% include "account/snippets/already_logged_in.html" %}
+    {% endif %}
+
+
+                        {% block content %}
+
+
+
+
+
+                                        <h5 class="nk-block-title">Confirm Email</h5>
+                                        <div class="nk-block-des">
+                                            {% if confirmation %}
+
+{% user_display confirmation.email_address.user as user_display %}
+
+<p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+{% csrf_token %}
+    <div class="form-group">
+    <button type="submit" class="btn btn-lg btn-primary btn-block">Confirm</button>
+    </div>
+</form>
+
+{% else %}
+
+{% url 'account_email' as email_url %}
+<p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
+
+{% endif %}
+
+
+                                
+                               
+                            </div>
+                        </div>
+
+
+                        {% endblock content %}

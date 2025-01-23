@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+
+
+{% block content %}
+    <style>
+      .filter .filter-inner {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--purple-color);
+        margin: 50px 0 30px 0;
+      }
+      .filter .filter-inner .search {
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .filter .filter-inner .search input {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 0.9rem;
+        margin-left: 10px;
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner .search i {
+        padding: 10px 15px;
+      }
+      .container-one .table-setup ul{
+        text-align: left;
+      }
+      .container-one .table-setup .dep{
+        display: flex;
+        justify-content: space-between;
+      }
+      .container-one .table-setup h5.trade{
+        color: var(--yellow-color);
+        top: 0;
+        position: relative;
+      }
+
+      .container-one .table-setup .red{
+        display: none;
+      }
+
+
+      @media only screen and (max-width: 992px) {
+        .filter .filter-inner {
+          border: none;
+          flex-direction: column;
+        }
+        .filter .filter-inner .search {
+          background-color: var(--purple-color);
+          margin-top: 20px;
+        }
+        .container-one .table-setup ul{
+            grid-template-columns: 100%;
+
+        }
+        .container-one .table-setup ul:hover{
+            background-color: transparent;
+        }
+        .container-one .table-setup ul li{
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .container-one .table-setup .red{
+            display: block;
+        }
+        .container-one .table-setup .top-tr{
+            display: none;
+        }
+        .container-one .table-setup .set-in{
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            padding: 15px 15px 0 15px;
+            border-bottom: 1px solid var(--purple-color);
+            margin-bottom: 30px;
+        }
+        .container-one .table-setup .set-in:hover{
+            background-color: var(--purple-color);
+        }
+        .container-one .table-setup h5.trade{
+            margin: 0 0 0 15px;
+        }
+
+      }
+
+      @media only screen and (max-width: 400px){
+        .container-one p{
+            font-size: 0.8rem;
+        }
+        .container-one .table-setup .logo-img{
+            height: 35px;
+            width: 35px;
+            margin: 0 10px;
+        }
+        .container-one .table-setup .set-in{
+            padding: 10px 5px;
+        }
+      }
+
+    </style>
+
+<!-- My Own -->
+
+
+    <!-- container-one start -->
+    <div class="container-one">
+      <div class="container-fluid">
+        <h2>Wallets</h2>
+
+        <!-- filter start -->
+        <!-- <div class="filter">
+          <div class="filter-inner">
+            <div class="search">
+              <input type="text" placeholder="Seach Coin Name" />
+              <i class="fas fa-search"></i>
+            </div>
+          </div>
+        </div> -->
+        <!-- filter end -->
+
+        
+        <!-- table set up start -->
+        <div class="table-setup">
+
+          <!-- ul -->
+          <ul class="top-tr">
+            <li class="first"><p>Currency</p></li>
+            <li><p>Balance</p></li>
+            <li><p>In Orders</p></li>
+            <li><p>In Futures</p></li>
+            <li><p>In Withdraw</p></li>
+            <li><p>Type</p></li>
+            <li><p>Actions</p></li>
+          </ul>
+          <!-- ul -->
+
+          {% for wallet in wallets %}
+          <!-- set-in start -->
+          <div class="set-in">
+            <!-- ul -->
+            <ul class="ul-2">
+                <li>
+                    <p class="red">Currency</p>
+                    <div class="first">
+                        <div class="logo-img">
+                            <img src="{{ wallet.currency.icon|thumbnail_url:'icon' }}" alt="" />
+                        </div>
+                        <div class="txt">
+                            <h5>{{wallet.currency}}</h5>
+                            
+                        </div>
+                    </div>
+                </li>
+                <li><p class="red">Balance</p><h5>{{wallet.balance}}</h5></li>
+                <li><p class="red">In Orders</p><h5>{{wallet.in_orders_balance}}</h5></li>
+                <li><p class="red">In Futures</p><h5>{{wallet.in_futures_balance}}</h5></li>
+                <li><p class="red">In Withdraw</p><h5>{{wallet.in_withdraw_balance}}</h5></li>
+
+                <li><p class="red">Type</p><h5>
+                      {% if wallet.currency.is_crypto %}Coin{% else %}Fiat{% endif %}
+              </h5></li>
+
+                <li>
+                    <p class="red">Actions</p>
+                    <div class="dep">
+                        <a href="{{wallet.deposit_url}}"><h5 class="trade">Deposit</h5></a>
+                        
+                        <a href="{{wallet.withdraw_url}}"><h5 class="trade">Withdraw</h5></a>
+                        
+                    </div>
+                </li>
+            </ul>
+
+
+            <!-- ul -->
+          </div>
+          <!-- set-in end -->
+          {% empty %}
+              <p>No Wallet Found </p>
+          {% endfor %}
+
+          
+        </div>
+      </div>
+    </div>
+    <!-- container one end -->
+
+    
+
+
+
+
+
+{% endblock content %}

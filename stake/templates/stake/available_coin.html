@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    
+
+    <style>
+      .filter .filter-inner {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--purple-color);
+        margin: 50px 0 30px 0;
+      }
+      .filter .filter-inner li {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 0.9rem;
+        margin-right: 15px;
+        transition: var(--transition);
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner li::after {
+        content: "";
+        display: block;
+        margin-top: 20px;
+        height: 3px;
+        width: 0;
+        background-color: var(--yellow-color);
+        transition: var(--transition);
+      }
+      .filter .filter-inner li:hover::after,
+      .filter .filter-inner li.active::after {
+        width: 100%;
+      }
+      .filter .filter-inner li:hover,
+      .filter .filter-inner li.active {
+        color: var(--yellow-color);
+      }
+      .filter .filter-inner .search {
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .filter .filter-inner .search input {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 0.9rem;
+        margin-left: 10px;
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner .search i {
+        padding: 10px 15px;
+      }
+      .container-one .table-setup #spotOne ul{
+        grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+        text-align: left;
+      }  
+      .container-one .table-setup #spotTwo ul{
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        text-align: left;
+      }     
+      .container-one .table-setup h5.com-lim{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--red-second-color);
+        background-color: #791a2746;
+      }      
+      .container-one .table-setup h5.com{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--green-color);
+        background-color: #1b6d4b38;
+      }
+      .container-one .table-setup h5.com-pend{
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 5px;
+        color: var(--yellow-color);
+        background-color: #6d571b38;
+      }
+      .container-one .table-setup .red{
+        display: none;
+      }
+      .container-one .table-setup h5.one{
+        margin-right: 30px;
+      }
+      .container-one .table-setup h5.tradeL{
+        color: var(--yellow-color);
+        position: relative;
+        display: inline-block; 
+        margin-top: 25px;
+        z-index: 56;
+      }
+      .container-one .table-setup h5.two{
+        right: 0;
+      }
+      .pos-ab {
+        position: relative;
+      }
+
+      @media only screen and (max-width: 992px) {
+        .filter .filter-inner {
+          border: none;
+          flex-direction: column;
+        }
+        .filter .filter-inner li {
+          color: #fff;
+          background-color: var(--purple-color);
+          padding: 5px;
+          border-radius: 5px;
+          font-size: 0.8rem;
+        }
+        .filter .filter-inner li:hover,
+        .filter .filter-inner li.active {
+          color: #000;
+          background-color: var(--yellow-color);
+        }
+        .filter .filter-inner li::after {
+          display: none;
+        }
+        .filter .filter-inner .search {
+          background-color: var(--purple-color);
+          margin-top: 20px;
+        }
+        .container-one .table-setup #spotOne ul{
+            grid-template-columns: 100%;
+
+        }
+        .container-one .table-setup #spotOne ul li{
+          margin-bottom: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .container-one .table-setup .red{
+            display: block;
+        }
+        .container-one .table-setup .top-tr{
+            display: none;
+        }
+        .container-one .table-setup h5.tradeL{
+          position: relative;
+          margin-right: 5px;
+        }
+      }
+    </style>
+
+    <!-- container-one start -->
+    <div class="container-one">
+      <div class="container-fluid">
+        <h2>Staking</h2>
+
+        <!-- filter start -->
+        <div class="filter">
+        	{% include 'stake/stake_nav.html' %}
+        <h5 style="margin: 60px 0 40px 0;">* Staking rewards are calculated every day at 00:00 UTC</h5>
+
+        </div>
+        <!-- filter end -->
+
+        <!-- table set up start -->
+        <div class="table-setup">
+          
+
+          <div class="pos-ab">
+
+            <div class="spot">
+
+                <!-- ul -->
+                <ul class="top-tr">
+                    <li class="first"><p>Coin</p></li>
+                    <li><p>Min Amount</p></li>
+                    <li><p>Max Amount</p></li>
+                    <li><p>Status</p></li>
+                    <li><p>Actions</p></li>
+                </ul>
+                <!-- ul -->
+
+          
+
+
+              <!-- spot-inner start -->
+              <div class="spot-inner">
+
+              	{% for plan in stake_plans %}
+                <!-- ul -->
+                <ul>
+                  <li>
+                    <p class="red">Coin</p>
+                    <div class="first">
+                        <div class="logo-img">
+                          <img src="{{plan.coin.icon.url}}" alt="" />
+                        </div>
+                        <div class="txt">
+                          <h5>{{plan.coin.symbol}}</h5>
+                          <h6>{{plan.coin.name}}</h6>
+                        </div>
+                    </div>
+                  </li>
+                  <li><p class="red">Min Amount</p><h5>{{plan.minimum_stake_amount}}</h5></li>
+                  <li><p class="red">Max Amount</p><h5>{{plan.maximum_stake_amount}}</h5></li>
+                  <li><p class="red">Status</p><h5 class="{{plan.status_color}}">
+                  {% if plan.active %}
+                      Active
+                  {% else %}
+                      In Active
+                  
+                  {% endif %}
+                  
+                </h5></li>
+                  <li>
+                    <p class="red">Actions</p>
+                    <div class="tradeL-flex">
+                      <h5 class="tradeL one"><a href="{{plan.get_absolute_url}}" style="color: var(--yellow-color);">Read more</a></h5>
+                      <h5 class="tradeL"><a href="{{plan.get_absolute_url}}" style="color: var(--yellow-color);">Stake now</a></h5>
+                    </div>
+                  </li>
+                  <a href="{{plan.get_absolute_url}}" class="fclick"></a>
+                </ul>
+                <!-- ul -->
+                {% empty %}
+                <!-- ul -->
+                <ul>
+                  <p>No Coin to Stake on currently</p>
+                </ul>
+                <!-- ul -->
+              	{% endfor %}
+
+              
+              </div>
+              <!-- spot-inner end -->
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- container one end -->
+
+    
+{% endblock content %}

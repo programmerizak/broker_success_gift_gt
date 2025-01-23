@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<style>
+    .deposit-options {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .deposit-inner{
+        margin-top: 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+
+    .option {
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+        max-width: 400px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;  /* Center align the content */
+    }
+
+    .option h3 {
+        margin-top: 0;
+    }
+
+    .option p {
+        margin-bottom: 10px;
+    }
+
+    .option button {
+        padding: 10px 20px;
+        background-color: var(--yellow-color);
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .option button:hover {
+        background-color: #0056b3; /* Darker shade of blue on hover */
+    }
+
+    .option button {
+        padding: 10px 20px;
+        background-color: #007bff; /* Blue color */
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: block;
+        margin: 25px auto 0 auto; /* This centers the button */
+    }
+
+    @media only screen and (max-width: 768px){
+        .deposit-inner{
+            grid-template-columns: subgrid;
+        }
+
+    } 
+</style>
+
+<div class="deposit-options">
+    <div class="container-fluid">
+        <h2>Deposit Options</h2>
+        <div class="deposit-inner">
+
+
+            <div class="option">
+                <h3>Automatic Deposit</h3>
+                <p>Automatically deposit from an external wallet to your Account </p>
+                <a href="{% url 'wallet:deposit_now' asset=wallet.currency.symbol   %}">
+                    <button>Deposit Automatically</button>
+                </a>
+            </div>
+
+            <div class="option">
+                <h3>Manual Deposit</h3>
+                <p>Manually send Crypto from your wallet to your account</p>
+                <a href="{% url 'wallet:deposit_now' wallet.currency.symbol %}">
+                    <button>Deposit Manually</button>
+                </a>
+            </div>
+
+
+            <!-- <div class="option">
+                <h3>Credit/Debit Card </h3>
+                <p>Buy Crypto with your card </p>
+                <a href="{% url 'wallet:deposit_online' wallet.currency.symbol %}">
+                    <button>Buy Now</button>
+                </a>
+            </div> -->
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

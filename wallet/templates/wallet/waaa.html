@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+
+{% block content %}
+
+<h1>WALLET LIST PAGE</h1>
+
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Currency</th>
+      <th>Available</th>
+      <th>In Order</th>
+      <th>In Futures</th>
+      <th>In Withdraw</th>
+      <th>Type</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+
+
+  	{% for wallet in wallets %}
+
+    <tr>
+      <td>
+      	<img src="{{ wallet.currency.icon|thumbnail_url:'icon' }}" alt="">
+        {{wallet.currency}}
+  	  </td>
+      <td>{{wallet.available_balance}}</td>
+      <td>{{wallet.in_orders_balance}}</td>
+      <td>{{wallet.in_futures_balance}}</td>
+      <td>{{wallet.in_withdraw_balance}}</td>
+
+      {% if wallet.currency.is_crypto %}
+       	<td>Coin</td>
+      {% else %}
+      	<td>Fiat</td>
+      {% endif %}
+
+      <td>{{wallet.in_withdraw_balance}}</td>
+
+
+      <td><a href="{{wallet.deposit_url}}">Deposit</a> | <a href="{{wallet.withdraw_url}}">Withdraw</a> </td>
+    </tr>
+
+
+  	{% empty %}
+  	    <p>No Wallet Found </p>
+  	{% endfor %}
+
+
+  </tbody>
+</table>
+
+
+
+
+
+
+
+{% endblock content %}

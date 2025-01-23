@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="form-inner container-fluid">
+    <form id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ form|crispy }}
+        </div>
+
+        <!-- Bot Check Section -->
+        <div class="bot-check">
+            <label>
+                <input type="checkbox" id="bot_check" />
+                I am not a bot
+            </label>
+        </div>
+
+        <!-- Loop through each form field to check and display errors -->
+        {% for field in form %}
+        <div class="form-group">
+            {{ field|crispy }}
+            {% if field.errors %}
+            <div class="form-errors">
+                {% for error in field.errors %}
+                <p class="error">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <label for="agree_terms">
+            <input class="check" type="checkbox" id="agree_terms" name="agree_terms" required>
+            I agree to the terms and conditions
+        </label>
+
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        <button id="submit_button" type="submit" disabled>Create Account</button>
+    </form>
+
+    <p>Already have an account? <a href="{{ login_url }}">Sign in</a>.</p>
+</div>
+
+<style>
+    .form-inner {
+        width: 500px;
+        margin: auto;
+        position: relative;
+    }
+    label, input {
+        width: 100%;
+    }
+    input, select, button {
+        display: inline-block;
+        width: 100%;
+        padding: 10px;
+        background-color: transparent;
+        outline: none;
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+        color: #fff;
+        margin-bottom: 25px;
+        margin-top: 10px;
+    }
+    input:focus {
+        border-color: var(--yellow-color);
+    }
+    select option {
+        background-color: var(--purple-color);
+    }
+    button {
+        cursor: pointer;
+    }
+    button:disabled {
+        cursor: not-allowed;
+        background-color: grey;
+    }
+    button:hover:enabled {
+        background-color: var(--yellow-color);
+        color: #000;
+    }
+    .check {
+        width: initial;
+        margin-top: 3px;
+        margin-right: 10px;
+    }
+    a {
+        color: var(--yellow-color);
+    }
+    .error {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+        .form-inner {
+            width: fit-content;
+        }
+    }
+</style>
+
+<script>
+    // JavaScript to enable the submit button only when bot check is passed
+    document.addEventListener('DOMContentLoaded', () => {
+        const botCheck = document.getElementById('bot_check');
+        const submitButton = document.getElementById('submit_button');
+
+        botCheck.addEventListener('change', () => {
+            submitButton.disabled = !botCheck.checked;
+        });
+    });
+</script>
+
+{% endblock content %}

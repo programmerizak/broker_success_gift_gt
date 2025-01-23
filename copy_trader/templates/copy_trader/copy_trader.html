@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <style>
+      .filter .filter-inner {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--purple-color);
+        margin: 50px 0 30px 0;
+      }
+      .filter .filter-inner li {
+        display: inline-block;
+        /* cursor: pointer; */
+        font-size: 0.9rem;
+        margin-right: 15px;
+        transition: var(--transition);
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner li::after {
+        content: "";
+        display: block;
+        margin-top: 20px;
+        height: 3px;
+        width: 0;
+        background-color: var(--yellow-color);
+        transition: var(--transition);
+      }
+      .filter .filter-inner li:hover::after,
+      .filter .filter-inner li.active::after {
+        width: 100%;
+      }
+      .filter .filter-inner li:hover,
+      .filter .filter-inner li.active {
+        color: var(--yellow-color);
+      }
+      .filter .filter-inner .search {
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .filter .filter-inner .search input {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 0.9rem;
+        margin-left: 10px;
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner .search i {
+        padding: 10px 15px;
+      }
+      .start-pro{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .start-pro .profile{
+        position: relative;
+        padding: 30px;
+        border-radius: 8px;
+        border: 1px solid var(--purple-color);
+      }
+      .pro-top{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--purple-color);
+      }
+      .pro-top .fa-star{
+        font-size: 1.2rem;
+        color: var(--yellow-color);
+      }
+      .pro-top .image{
+        display: flex;
+      }
+      .pro-top img{
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+      }
+      .pro-top i{
+        margin-right: 6px;
+        color: var(--first-text-color);
+      }
+      .pro-top h3, .pro-top p{
+        color: #fff;
+      }
+      .pro-top p span{
+        color: var(--first-text-color);
+      }
+      .small-grid{
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+      .small-grid h5{
+        color: #fff;
+      }
+      .small-grid h5.com{
+        color: var(--green-color);
+      }
+      .small-grid h5.com-lim{
+        color: var(--red-second-color);
+      }
+      .button button{
+        padding: 10px 25px;
+        width: 100%;
+        outline: none;
+        background-color: var(--yellow-color);
+        border: none;
+        border-radius: 5px;
+        color: #000;
+        margin-top: 30px;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      
+      @media only screen and (max-width: 992px) {
+        .filter .filter-inner {
+          border: none;
+          flex-direction: column;
+          border-bottom: 1px solid var(--purple-color);
+          padding-bottom: 30px;
+        }
+        .filter .filter-inner li {
+          color: #fff;
+          background-color: var(--purple-color);
+          padding: 5px;
+          border-radius: 5px;
+          font-size: 0.8rem;
+        }
+        .filter .filter-inner li:hover,
+        .filter .filter-inner li.active {
+          color: #000;
+          background-color: var(--yellow-color);
+        }
+        .filter .filter-inner li::after {
+          display: none;
+        }
+        .filter .filter-inner .search {
+          background-color: var(--purple-color);
+          margin-top: 20px;
+        }
+        .start-pro{
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media only screen and (max-width: 768px) {
+        .start-pro{
+          grid-template-columns: subgrid;
+        }
+      }
+      
+      @media only screen and (max-width: 400px) {
+        .start-pro .profile{
+          padding: 10px;
+        }
+        .small-grid{
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+        }
+        .pro-top{
+          flex-direction: column-reverse;
+          align-items: flex-start;
+        }
+        .pro-top .fa-star{
+          margin-bottom: 20px;
+        }
+      } 
+
+    </style>
+
+    <!-- container-one start -->
+    <div class="container-one">
+      <div class="container-fluid">
+        <h2>Copy Traders</h2>
+
+        <!-- filter start -->
+        <div class="filter">
+          <div class="filter-inner">
+            <div class="row">
+              <li class="list active">Expert Traders</li>
+            </div>
+          </div>
+        </div>
+        <!-- filter end -->
+
+
+        <div class="start-pro">
+
+          {% for trader in copy_traders %}
+          <!-- profile start -->
+          <div class="profile">
+            <!-- profile top start -->
+            <div class="pro-top">
+              <div class="image">
+                <img src="{{trader.photo.url}}" alt="">
+                <div class="txt">
+                  <h3>{{trader.name}}</h3>
+                  <p><i class="fas fa-clock"></i><span>{{ trader.date_joined|timesince }}</span></p>
+                </div>
+              </div>
+
+              <div class="star">
+                <i class="fas fa-star fa-spin"></i>
+              </div>
+            </div>
+            <!-- profile top end -->
+
+
+            <div class="small-grid">
+
+              <div>
+                <p>No. of trades</p>
+                <h5>{{trader.total_trades}}</h5>
+              </div>
+
+              <div>
+                <p>No. of Copiers</p>
+                <h5>{{trader.no_copiers}}</h5>
+              </div>
+              
+
+              <div>
+                <p>% Win</p>
+                <h5 class="com">{{trader.win_percentage}}</h5>
+              </div>
+
+              <div>
+                <p>% Loss</p>
+                <h5 class="com-lim">{{trader.loose_percentage}}</h5>
+              </div>
+
+              <div>
+                <p>No. of Wins</p>
+                <h5>{{trader.no_wins}}</h5>
+              </div>
+
+              <div>
+                <p>No. of Losses</p>
+                <h5>{{trader.no_loose}}</h5>
+              </div>
+
+              <div>
+                <p>Date Joined</p>
+                <h5>{{trader.date_joined}}</h5>
+              </div>
+            </div>
+
+
+
+            
+		    <div class="button">
+		        {% if request.user in trader.copiers.all %}
+		            <button class="btn-2" disabled>Copying</button>
+		        {% else %}
+
+		        	<form method="POST" action="{% url 'copy_trader:copy_trader' %}">
+		        		<input type="hidden" value="{{trader.id}}" name="expert_id">
+		        		{% csrf_token %}
+		            	<button class="btn-2">Copy</button>
+		            </form>
+
+		        {% endif %}
+		    </div>
+
+
+
+
+
+
+
+
+
+          </div>
+          <!-- profile end -->
+           {% empty %}
+              <h1>No Copy Trader Found </h1>
+          {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+        
+        </div>
+      </div>
+    </div>
+    <!-- container one end -->
+
+{% endblock content %}

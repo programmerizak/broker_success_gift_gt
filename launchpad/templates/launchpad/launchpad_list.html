@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    <style>
+      .filter .filter-inner {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--purple-color);
+        margin: 50px 0 30px 0;
+      }
+      .filter .filter-inner li {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 0.9rem;
+        margin-right: 15px;
+        transition: var(--transition);
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner li::after {
+        content: "";
+        display: block;
+        margin-top: 20px;
+        height: 3px;
+        width: 0;
+        background-color: var(--yellow-color);
+        transition: var(--transition);
+      }
+      .filter .filter-inner li:hover::after,
+      .filter .filter-inner li.active::after {
+        width: 100%;
+      }
+      .filter .filter-inner li:hover,
+      .filter .filter-inner li.active {
+        color: var(--yellow-color);
+      }
+      .filter .filter-inner .search {
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .filter .filter-inner .search input {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 0.9rem;
+        margin-left: 10px;
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner .search i {
+        padding: 10px 15px;
+      }
+      .container-one .table-setup ul{
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 2fr 1fr 1fr 1fr;
+        text-align: left;
+      }
+      .container-one .table-setup h5.com-lim{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--red-second-color);
+        background-color: #791a2746;
+      }      
+      .container-one .table-setup h5.com{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--green-color);
+        background-color: #1b6d4b38;
+      }
+      .container-one .table-setup h5.com-pend{
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 5px;
+        color: var(--yellow-color);
+        background-color: #6d571b38;
+      }
+      .container-one .table-setup .red{
+        display: none;
+      }
+      .pos-ab .fav .no-match{
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .pos-ab .fav .no-match i{
+        font-size: 2rem;
+      }
+      .pos-ab .fav .no-match p{
+        margin-top: 20px;
+      }
+
+
+      @media only screen and (max-width: 992px) {
+        .filter .filter-inner {
+          border: none;
+          flex-direction: column;
+        }
+        .filter .filter-inner li {
+          color: #fff;
+          background-color: var(--purple-color);
+          padding: 5px;
+          border-radius: 5px;
+          font-size: 0.8rem;
+        }
+        .filter .filter-inner li:hover,
+        .filter .filter-inner li.active {
+          color: #000;
+          background-color: var(--yellow-color);
+        }
+        .filter .filter-inner li::after {
+          display: none;
+        }
+        .filter .filter-inner .search {
+          background-color: var(--purple-color);
+          margin-top: 20px;
+        }
+        .container-one .table-setup ul{
+            grid-template-columns: 100%;
+
+        }
+        .container-one .table-setup ul li{
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .container-one .table-setup .red{
+            display: block;
+        }
+        .container-one .table-setup .top-tr{
+            display: none;
+        }
+        .container-one .table-setup h5.tradeL{
+          position: relative;
+          margin-right: 5px;
+        }
+      }
+    </style>
+
+
+    <!-- container-one start -->
+    <div class="container-one">
+      <div class="container-fluid">
+        <h2>Launchpads</h2>
+
+        <!-- filter start -->
+        <div class="filter">
+          <div class="filter-inner">
+            <div class="row">
+
+
+              <a href="{% url 'launchpad:launchpad_list' %}"><li
+              {% if page_title == 'Launch Pad' %} 
+               class="active" 
+              {% endif %} 
+              >All</li></a>
+
+
+              <a href="{% url 'launchpad:launchpad_active' %}"><li
+              	{% if page_title == 'Launch active' %}
+              	    class="active"
+              	{% endif %}
+              >Active</li></a>
+
+
+
+              <a href="{% url 'launchpad:launchpad_upcoming' %}"><li 
+              	{% if page_title == 'Launch upcoming' %}
+              	    class="active" 
+              	{% endif %}
+              	>Upcoming</li></a>
+              <a href="{% url 'launchpad:launchpad_completed' %}"><li
+              	{% if page_title == 'Launch completed' %}
+              	    class="active"
+              	{% endif %}
+              	>Completed</li></a>
+            </div>
+          </div>
+        </div>
+        <!-- filter end -->
+
+        <!-- table set up start -->
+        <div class="table-setup">
+          <!-- ul -->
+          <ul class="top-tr">
+            <li class="first"><p>Coin</p></li>
+            <li><p>Name</p></li>
+            <li><p>Soft cap.</p></li>
+            <li><p>Hard cap.</p></li>
+            <li><p>Sale price</p></li>
+            <li><p>Period</p></li>
+            <li><p>Filled</p></li>
+            <li><p>Status</p></li>
+            <li><p>Actions</p></li>
+          </ul>
+          <!-- ul -->
+
+          
+
+          <div class="pos-ab">
+
+            <div class="spot" id="spotOne">
+
+              <!-- spot-inner start -->
+              <div class="spot-inner">
+
+              	{% for launch in launchpads %}
+                <!-- ul -->
+                <ul>
+                  <li>
+                    <p class="red">Coin</p>
+                    <div class="first">
+                        <div class="logo-img">
+                            <img src="{{launch.coin_icon.url}}" alt="" />
+                        </div>
+                        <div class="txt">
+                            <h5>{{launch.coin_symbol}}</h5>
+                            <h6>{{launch.coin_name}}</h6>
+                        </div>
+                    </div>
+                  </li>
+                  <li><p class="red">Name</p><h5>{{launch.coin_name}}</h5></li>
+                  <li><p class="red">Soft cap.</p><h5>{{launch.soft_cap}}</h5></li>
+                  <li><p class="red">Hard cap.</p><h5>{{launch.hard_cap}}</h5></li>
+                  <li><p class="red">Sale price</p><h5>{{launch.sale_price}}</h5></li>
+                  <li><p class="red">Period</p><h5>{{ launch.launch_time_start|date:"d-m-Y H:i" }} - {{ launch.launch_time_end|date:"d-m-Y H:i" }}</h5></li>
+                  <li><p class="red">Filled</p><h5>{{launch.filled_percent}}%</h5></li>
+                  <li><p class="red">Status</p><h5 class="{{launch.status_color}}">{{launch.status}}</h5></li>
+                  <li><p class="red">Actions</p><h5 class="tradeL"><a href="{{launch.get_absolute_url}}" style="color: var(--yellow-color);">Read more</a></h5></li>
+
+                  <a href="{{launch.get_absolute_url}}" class="fclick"></a>
+                </ul>
+                <!-- ul -->
+              	{% empty %}
+              	<center>
+	              	 <!-- ul -->
+	                <div class="no-match">
+	                  <i class="fas fa-search"></i>
+	                  <p>No record found.</p>
+	                </div>
+	                <!-- ul -->
+	            </center>
+              	{% endfor %}
+
+              </div>
+              <!-- spot-inner end -->
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- container one end -->
+
+
+
+
+{% endblock content %}

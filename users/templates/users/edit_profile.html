@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load thumbnail %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="form-inner">
+        <h1>EDIT PROFILE </h1>
+
+        <form method="POST" action="{% url 'users:edit_profile' %}" enctype="multipart/form-data">
+
+            {{form|crispy}}
+            <button type="submit">Update Profile </button>
+            
+            {% csrf_token %}
+        </form>
+
+    </div>
+</div>
+
+
+<style>
+    .form-inner{
+        width: 500px;
+        margin: auto;
+        position: relative;
+    }
+    label, input{
+        width: 100%;
+    }
+    input, select, button{
+        display: inline-block;
+        width: 100%;
+        padding: 10px;
+        background-color: transparent;
+        outline: none;
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+        color: #fff;
+        margin-bottom: 25px;
+        margin-top: 10px;
+    }
+    input:focus{
+        border-color: var(--yellow-color);
+    }
+    select option{
+        background-color: var(--purple-color);
+    }
+    button{
+        cursor: pointer;
+    }
+    button:hover{
+        background-color: var(--yellow-color);
+        color: #000;
+    }
+    a{
+        color: var(--yellow-color);
+    }
+    @media (max-width: 768px){
+        .form-inner{
+            width: fit-content;
+        }
+    }
+</style>
+
+{% endblock content %}

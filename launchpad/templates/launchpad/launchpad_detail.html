@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <style>
+        .tok-inner{
+            width: 670px;
+            position: relative;
+        }
+        .container-one h2{
+            margin-bottom: 80px;
+        }
+        .tok-inner .tok-flex{
+            display: flex;
+            justify-content: space-between;
+        }
+        .tok-inner .skill-get{
+            margin-bottom: 50px;
+        }
+        .tok-inner .skill-get li{
+            list-style: none;
+        }
+        .tok-inner .skill-get li .bar{
+            display: block;
+            position: relative;
+            height: 8px;
+            margin: 10px 0;
+            background-color: #fff;
+        }
+        .tok-inner .skill-get li .bar span{
+            float: left;
+            height: 100%;
+            width: 46.10%;
+            position: relative;
+            background-color: var(--green-second-color);
+        }
+        .tok-inner .skill-get li .bar span::after{
+            content: '46.10%';
+            position:  absolute;
+            top: 8px;
+            right: 0;
+            transform: translateX(50%);
+            font-size: 0.7rem;
+        }
+        .tok-inner .tok-image  img{
+            width: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .tok-inner .txt{
+            margin: 40px 0 50px 0;
+        }
+        .tok-inner .txt li{
+            list-style: none;
+            width: 100%;
+            border-bottom: 1px solid var(--purple-color);
+            padding: 7px 0;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .tok-inner .txt li h5{
+            color: #fff;
+        }
+        .tok-inner .tok-log{
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 0;
+            width: 100%;
+            color: #fff;
+            border-radius: 5px;
+            background-color: var(--blue-dark-thir-color);
+            text-align: center;
+            transition: var(--transition);
+        }
+        .tok-inner .tok-log:hover{
+            background-color: var(--purple-color);
+        }
+
+
+        @media screen and (max-width: 768px) {
+            .tok-inner{
+                width: 100%;
+            }
+        }
+      
+    </style>
+
+    <!-- container-one start -->
+    <div class="container-one">
+      <div class="container-fluid">
+        <h2>{{launchpad.coin_name}}</h2>
+
+        <!-- tok-inner start -->
+        <div class="tok-inner">
+            <div class="tok-flex">
+                <h5>{{launchpad.soft_cap}} {{launchpad.coin_symbol}}</h5>
+                <h5>{{launchpad.hard_cap}} {{launchpad.coin_symbol}}</h5>
+            </div>
+            <div class="skill-get">
+                <li><span class="bar"><span></span></span></li>
+            </div>
+
+            <div class="tok-image">
+                <h5>Description:</h5>
+                <h5 style="color: #fff;margin: 15px 0;">{{launchpad.description}}</h5>
+                <div class="img">
+                    <img src="{{launchpad.coin_icon.url}}" alt="" width="500" height="400">
+                </div>
+            </div>
+
+            <div class="txt">
+                <ul>
+                    <li>
+                        <p>Coin</p>
+                        <h5>{{launchpad.coin_name}}</h5>
+                    </li>
+                    <li>
+                        <p>Symbol</p>
+                        <h5>{{launchpad.coin_symbol}}</h5>
+                    </li>
+                    <li>
+                        <p>Network</p>
+                        <h5>{{launchpad.coin_name}}</h5>
+                    </li>
+           
+                    <li>
+                        <p>Minimum buy amount</p>
+                        <h5>{{launchpad.sale_price}}</h5>
+                    </li>
+                    <li>
+                        <p>Soft Cap.</p>
+                        <h5>{{launchpad.soft_cap}} {{launchpad.coin_symbol}}</h5>
+                    </li>
+
+
+                    <li>
+                        <p>Hard Cap.</p>
+                        <h5>{{launchpad.hard_cap}} {{launchpad.coin_symbol}}</h5>
+                    </li>
+
+
+
+
+                    <li>
+                        <p>Launch Time Start .</p>
+                        <h5>{{launchpad.launch_time_start}}</h5>
+                    </li>
+
+
+                    <li>
+                        <p>Launch Time End.</p>
+                        <h5>{{launchpad.launch_time_end}}</h5>
+                    </li>
+
+
+
+                    <li>
+                        <p>Filled Percent.</p>
+                        <h5>{{launchpad.filled_percent}}</h5>
+                    </li>
+
+
+
+                </ul>
+            </div>
+
+            <span>Sale Price: {{launchpad.sale_price}} {{launchpad.coin_symbol}}</span>
+
+            <a href="" class="tok-log">Invest Now</a>
+
+
+        </div>
+        <!-- tok-inner end -->
+        
+      </div>
+    </div>
+    <!-- container one end -->
+{% endblock content %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Rejected</title>
+</head>
+<body>
+    <p>Hello {{ deposit.user.username }},</p>
+    
+    <p>Your deposit of {{ deposit.amount }} {{ deposit.wallet.currency.symbol }} has been rejected.</p>
+    
+    <p>Transaction ID: {{ deposit.transaction_id }}</p>
+    
+    <p>Deposit Status: {{ deposit.deposit_status }}</p>
+    
+    <p>Please review the details of your deposit and feel free to contact us if you have any questions or concerns.</p>
+    
+    <p>Thank you for using our platform.</p>
+</body>
+</html>

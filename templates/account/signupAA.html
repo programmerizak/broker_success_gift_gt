@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+        <div x-data="{ num1: Math.floor(Math.random() * 10) + 1, num2: Math.floor(Math.random() * 10) + 1, answer: '', error: '' }" class="form-inner container-fluid">
+            <form id="signup_form" method="post" action="{% url 'account_signup' %}">
+                
+                <div class="form-group">
+                    {{form|crispy}}
+                </div>
+
+
+
+<style>
+    .bot-check {
+      margin-top: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    .bot-check label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .bot-check .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .bot-check input[type="text"] {
+      width: 100px;
+      margin-bottom: 10px;
+      padding: 5px;
+    }
+    .bot-check .error {
+      color: red;
+      font-size: 0.9rem;
+    }
+  </style>
+
+    <!-- Bot Check Section -->
+    <div class="bot-check">
+      <label>Bot Check</label>
+      <div id="bot-question" class="question"></div>
+      <input type="text" id="bot-answer" placeholder="Your answer" required>
+      <div id="bot-error" class="error"></div>
+    </div>
+
+
+
+ <!-- Loop through each form field to check and display errors -->
+        {% for field in form %}
+        <div class="form-group">
+            <!-- Field rendered with crispy -->
+            {{ field|crispy }}
+            <!-- Render errors for the field if they exist -->
+            {% if field.errors %}
+            <div class="form-errors">
+                {% for error in field.errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+                
+                <label for="agree_terms">
+                    <input class="check" type="checkbox" id="agree_terms" name="agree_terms" required>
+                    I agree to the terms and conditions
+                </label>
+
+                  {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                  {% endif %}
+
+                {% csrf_token %}
+                <button type="submit">Create Account</button>
+            </form>
+
+            <p>Already have an account? <a href="{{ login_url }}">Sign in</a>.</p>
+        </div>
+
+
+        <style>
+            .form-inner{
+                width: 500px;
+                margin: auto;
+                position: relative;
+            }
+            label, input{
+                width: 100%;
+            }
+            input, select, button{
+                display: inline-block;
+                width: 100%;
+                padding: 10px;
+                background-color: transparent;
+                outline: none;
+                border: 1px solid var(--blue-dark-fourth-color);
+                border-radius: 5px;
+                color: #fff;
+                margin-bottom: 25px;
+                margin-top: 10px;
+            }
+            input:focus{
+                border-color: var(--yellow-color);
+            }
+            select option{
+                background-color: var(--purple-color);
+            }
+            button{
+                cursor: pointer;
+            }
+            button:hover{
+                background-color: var(--yellow-color);
+                color: #000;
+            }
+            .check{
+                width: initial;
+                margin-top: 3px;
+                margin-right: 10px;
+            }
+            a{
+                color: var(--yellow-color);
+            }
+            .error {
+                color: red;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+            @media (max-width: 768px){
+                .form-inner{
+                    width: fit-content;
+                }
+            }
+        </style>
+        
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const questionElement = document.getElementById("bot-question");
+      const answerInput = document.getElementById("bot-answer");
+      const errorElement = document.getElementById("bot-error");
+      const signupForm = document.getElementById("signup-form");
+
+      // Generate a random bot check question
+      const num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+      const num2 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+      const correctAnswer = num1 + num2;
+
+      // Display the question
+      questionElement.textContent = `What is ${num1} + ${num2}?`;
+
+      // Handle form submission
+      signupForm.addEventListener("submit", function (event) {
+        // Validate the bot check answer
+        const userAnswer = parseInt(answerInput.value, 10);
+        if (userAnswer !== correctAnswer) {
+          // Prevent form submission and show an error
+          event.preventDefault();
+          errorElement.textContent = "Incorrect answer. Please try again.";
+        } else {
+          // Clear any error message
+          errorElement.textContent = "";
+        }
+      });
+    });
+  </script>
+
+
+
+{% endblock content %}
+                        

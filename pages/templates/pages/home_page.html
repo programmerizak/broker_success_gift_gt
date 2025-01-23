@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+
+{% block content %}
+
+
+        <!-- carousel-text start -->
+        <div class="carousel-text">
+            <h1>The Most <span class="ani"></span> <br>Cryptocurrency Exchange.</h1>
+            <p>Get started with the easiest and most secure platform to buy, sell, trade, and earn cryptocurrencies.</p>
+            <a href="{% url 'trade:place_a_trade' %}"><button>Place a Trade</button></a>
+        </div>
+        <!-- carousel-text end -->
+
+        <div class="container">
+            <!-- Swiper -->
+            <a href="#"><h5 style="text-align: right;color: var(--yellow-color);margin-bottom: 10px;">All news & announcements →</h5></a>
+            <div class="swiper mySwiper">
+                
+<!-- TradingView Widget BEGIN -->
+
+
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+  {
+  "feedMode": "all_symbols",
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "width": "100%",
+  "height": "500",
+  "colorTheme": "dark",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+
+
+<!-- TradingView Widget END -->
+            </div>
+            <!-- swiper end -->
+        </div>
+
+
+    <style>
+        .swiper {
+        width: 100%;
+        height: 100%;
+      }
+
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .swiper-slide a{
+        background-color: var(--blue-dark-thir-color);
+      }
+
+      .swiper {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+
+
+    <!-- container-one start -->
+    <div class="container-one">
+        <div class="container-fluid">
+            <h1>Market trend</h1>
+
+
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+  {
+  "width": "auto",
+  "height": "1000",
+  "defaultColumn": "overview",
+  "screener_type": "crypto_mkt",
+  "displayCurrency": "USD",
+  "colorTheme": "dark",
+  "locale": "en",
+  "isTransparent": false
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+
+
+      
+        </div>
+    </div>
+    <!-- container one end -->
+
+
+
+    <!-- container-two start -->
+    <div class="container-two">
+        <div class="container-fluid">
+            <div class="txt">
+                <h1>Trade anywhere</h1>
+                <h3>Compatible with multiple devices, start trading with safety and convenience.</h3>
+            </div>
+            <div class="img">
+                <img src="{% static 'images/mockup.png' %}" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- container-two end -->
+
+    
+
+    <!-- container-three start -->
+    <div class="container-three">
+        <div class="container">
+            <div class="txt">
+                <h1>Features</h1>
+            </div>
+            <div class="grid-row">
+                <!-- grid -->
+                <div class="grid-item">
+                    <div class="icon">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <div class="txt">
+                        <h2>Customer Service 24/7</h2>
+                        <p>Don't know how to trade or how to check the markets? Feel free to ask your questions to customer support.</p>
+                    </div>
+                </div>
+                <!-- grid -->
+
+                <!-- grid -->
+                <div class="grid-item">
+                    <div class="icon">
+                        <i class="far fa-credit-card"></i>
+                    </div>
+                    <div class="txt">
+                        <h2>Credit Card Payments</h2>
+                        <p>Start your cryptocurrency journey today. Buy cryptocurrency with your credit card.</p>
+                    </div>
+                </div>
+                <!-- grid -->
+
+                <!-- grid -->
+                <div class="grid-item">
+                    <div class="icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <div class="txt">
+                        <h2>Markets</h2>
+                        <p>Buy and sell popular digital currencies, keep track of them in the one place..</p>
+                    </div>
+                </div>
+                <!-- grid -->
+
+                <!-- grid -->
+                <div class="grid-item">
+                    <div class="icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="txt">
+                        <h2>Security</h2>
+                        <p>We store the vast majority of the digital assets in secure offline storage.</p>
+                    </div>
+                </div>
+                <!-- grid -->
+            </div>
+        </div>
+    </div>
+    <!-- container-three end -->
+
+    
+{% endblock content %}

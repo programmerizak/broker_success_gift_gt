@@ -1,0 +1,311 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Centralized Exchange Software</title>
+
+    <!-- Font Awesome core CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.png' %}" />
+  </head>
+
+  <body>
+
+    <div class="login-grid">
+        <!-- header start -->
+        <header class="header">
+            <!-- nav start -->
+            <nav class="container-fluid">
+                <div class="logo-ul">
+                    <a href="{% url 'pages:home_page' %}"><img src="{% static 'images/logo.png' %}" alt=""></a>
+                </div>
+
+                <div class="pro">
+                    <div class="light-dark" onclick="themeMode()">
+                        <i class="fas fa-sun one"></i>
+                        <i class="fas fa-moon two"></i>
+                    </div>
+                </div>
+            </nav>
+            <!-- nav end -->
+
+            <div class="hero">
+                <div class="container-fluid">
+                    <!-- carousel-text start -->
+                    <div class="carousel-text">
+                        <h1>The Most <span class="ani"></span> <br>Cryptocurrency Exchange.</h1>
+                        <h3>Get started with the easiest and most secure platform to buy, sell, trade, and earn cryptocurrencies.</h3>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header end -->
+        
+
+        <!-- login start page -->
+        <div class="loginn">
+            <!-- cont inner start -->
+            <div class="cont-inner">
+                <h2>Login</h2>
+
+                <label for="inp1">Email:</label> <br>
+                <input id="inp1" type="email" value="admin@cex.exchange"> <br>
+
+                    <label for="inp2">Password:</label> <br>
+                <input id="inp2" type="password" value="..........">
+
+                <button type="sumbit">Login</button>
+
+                <div class="create-forget">
+                    <p onclick="openReg()">Create new account</p>
+                    <p onclick="openFog()">Forget your password?</p>
+                </div>
+            </div>
+            <!--  cont inner end --> 
+        </div>
+        <!-- login end page -->
+
+
+        <!-- Register start page -->
+        <div class="register">
+            <!-- cont inner start -->
+            <div class="cont-inner">
+                <h2>Register</h2>
+
+                <label for="inp1">Email:</label> <br>
+                <input id="inp1" type="email" value="admin@cex.exchange"> <br>
+
+                <label for="inp2">Password:</label> <br>
+                <input id="inp2" type="password" value="..........">
+
+                <label for="inp3">Confirm password:</label> <br>
+                <input id="inp3" type="password" value="..........">
+
+                <input type="checkbox" class="check"> <label for="">I agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></label>
+
+                <button type="sumbit">Register</button>
+
+                <div class="create-forget">
+                    <p onclick="openLog()">Already have an account?</p>
+                </div>
+            </div>
+            <!--  cont inner end --> 
+        </div>
+        <!-- Register end page -->
+
+
+        <!-- forget start page -->
+        <div class="forget">
+            <!-- cont inner start -->
+            <div class="cont-inner">
+                <h2>Verify Email</h2>
+
+                <h4>Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.</h4>
+                <label for="inp1">Email:</label> <br>
+                <input id="inp1" type="email" value=""> <br>
+
+                <button type="sumbit">Email Password Reset Link</button>
+
+                <div class="create-forget">
+                    <p onclick="openReg()">Register</p>
+                    <p onclick="openLog()">Login</p>
+                </div>
+            </div>
+            <!--  cont inner end --> 
+        </div>
+        <!-- forget end page -->
+    </div>
+
+
+
+    <style>
+        .login-grid{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        header{
+            height: 100vh;
+            margin-bottom: 0;
+            background-image: url({% static 'images/bg-home.png' %});
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            padding: 50px;
+            overflow: hidden;
+            border-right: 1px solid var(--blue-dark-thir-color);
+        }
+        .carousel-text{
+            text-align: left;
+        }
+        .hero{
+            background: none;
+            padding-top: 70px;
+        }
+        .loginn, .register, .forget{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .register, .forget, .loginn.active{
+            display: none;
+        }
+        .register.active, .forget.active{
+            display: flex;
+        }
+        .cont-inner{
+            width: 80%;
+            border: 1px solid var(--blue-dark-thir-color);
+            padding: 30px;
+        }
+        .cont-inner h2{
+            margin-bottom: 30px;
+        }
+        .cont-inner h4{
+            margin-bottom: 15px;
+        }
+        .cont-inner h4 strong{
+            font-weight: 500;
+        }
+        .cont-inner i{
+            margin-left: 15px;
+        }
+        .cont-inner input{
+            display: inline-block;
+            width: 100%;
+            padding: 7px 0;
+            background-color: transparent;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid var(--blue-dark-fourth-color);
+            color: #fff;
+            margin-bottom: 25px;
+        }
+        .cont-inner input::placeholder{
+            color: var(--first-text-color);
+        }
+        .cont-inner input.check{
+            width: initial;
+            margin-top: 3px;
+            margin-right: 10px;
+        }
+        .cont-inner label a{
+            color: var(--yellow-color);
+        }
+        .cont-inner button{
+            width: 100%;
+            padding: 15px 25px;
+            outline: none;
+            background-color: var(--purple-color);
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            margin-top: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .cont-inner button:hover{
+            background-color: var(--blue-dark-fourth-color);
+        }
+        .cont-inner label{
+            font-size: 0.9rem;
+        }
+        .create-forget{
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .create-forget p{
+            cursor: pointer;
+            color: var(--yellow-color);
+        }
+
+        @media only screen and (max-width: 992px){
+            .login-grid{
+                grid-template-columns: subgrid;
+            }
+            header{
+                display: none;
+            }
+            .cont-inner{
+                width: 90%;
+            }
+        }
+
+        @media only screen and (max-width: 450px){
+            .cont-inner{
+                padding: 15px;
+            }
+        }
+    </style>
+
+
+
+
+
+
+    <script src="{% static 'custom.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        // Typedjs
+
+        var typed = new Typed('.ani', 
+
+        {
+            strings: [
+
+                "Trusted",
+                "Secured",
+                "Fast",
+                "Reliable"
+            ],
+
+            typeSpeed: 100,
+            backSpeed: 100,
+            loop: true,
+        });
+
+
+
+        // Login Register and Forget password
+        var loginn = document.querySelector('.loginn');
+        var register = document.querySelector('.register');
+        var forget = document.querySelector('.forget');
+
+        function openReg(){
+            loginn.classList.add('active');
+            register.classList.add('active');
+            forget.classList.remove('active');
+        }
+
+        function openFog(){
+            loginn.classList.add('active');
+            register.classList.remove('active');
+            forget.classList.add('active');
+        }
+
+        function openLog(){
+            loginn.classList.remove('active');
+            register.classList.remove('active');
+            forget.classList.remove('active');
+        }
+
+    </script>
+
+
+  </body>
+</html>
+

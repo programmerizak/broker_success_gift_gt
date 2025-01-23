@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+  .plan-details {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid var(--blue-dark-fourth-color);
+    border-radius: 5px;
+    background-color: var(--background-light-color);
+  }
+  .plan-details h2 {
+    color: var(--yellow-color);
+    margin-bottom: 10px;
+  }
+  .plan-details p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: var(--first-text-color);
+  }
+  .plan-details p span {
+    font-weight: bold;
+    color: var(--yellow-color);
+  }
+
+  .deposit-section {
+    margin-top: 50px;
+    padding: 20px;
+    border: 1px solid var(--blue-dark-fourth-color);
+    border-radius: 5px;
+    background-color: var(--background-light-color);
+  }
+  .deposit-section h2 {
+    color: var(--yellow-color);
+    margin-bottom: 20px;
+  }
+
+  .deposit-instructions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  .instruction {
+    text-align: center;
+  }
+  .instruction h4 {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--yellow-color);
+    color: #fff;
+    border: 3px solid var(--blue-dark-fourth-color);
+    margin: 0 auto 15px;
+  }
+  .instruction h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  .instruction p {
+    font-size: 0.9rem;
+    color: var(--first-text-color);
+  }
+
+  .deposit-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid var(--blue-dark-fourth-color);
+    border-radius: 5px;
+  }
+  .deposit-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .deposit-form input,
+  .deposit-form select,
+  .deposit-form button {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid var(--blue-dark-fourth-color);
+    border-radius: 5px;
+  }
+  .deposit-form button {
+    background-color: var(--yellow-color);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .deposit-form button:hover {
+    background-color: var(--yellow-second-color);
+  }
+</style>
+
+<!-- Plan Details Section -->
+<div class="plan-details">
+  <h2>Plan: {{ plan.name }}</h2>
+  <p><span>Minimum Amount:</span> {{ plan.minimum | floatformat:2 }}</p>
+  <p><span>Maximum Amount:</span> {{ plan.maximum | floatformat:2 }}</p>
+  <p><span>Return on Investment (ROI):</span> {{ plan.roi }}%</p>
+  <p><span>Duration:</span> {{ plan.duration }} days</p>
+  <p><span>Description:</span> {{ plan.description }}</p>
+</div>
+
+<!-- Deposit Section -->
+<div class="deposit-section">
+  <h2>Deposit for {{ plan.name }}</h2>
+  
+  <!-- Step-by-step Instructions -->
+  <div class="deposit-instructions">
+    <div class="instruction">
+      <h4>1</h4>
+      <h3>Copy Address</h3>
+      <p>Copy the wallet address provided below.</p>
+    </div>
+    <div class="instruction">
+      <h4>2</h4>
+      <h3>Pay to the Address</h3>
+      <p>Transfer the specified amount to the address.</p>
+    </div>
+    <div class="instruction">
+      <h4>3</h4>
+      <h3>Wait for Confirmation</h3>
+      <p>Allow time for network confirmation.</p>
+    </div>
+    <div class="instruction">
+      <h4>4</h4>
+      <h3>Submit Form</h3>
+      <p>Fill the deposit form below and submit it.</p>
+    </div>
+  </div>
+  
+  <!-- Deposit Form -->
+  <div class="deposit-form">
+    <form method="post" action="{% url 'plans:deposit_on_plan' plan.plan_name %}">
+      {% csrf_token %}
+      <label for="amount">Deposit Amount</label>
+      <input type="number" id="amount" name="amount" placeholder="Enter deposit amount" required>
+      
+      <label for="transaction_id">Transaction ID</label>
+      <input type="text" id="transaction_id" name="transaction_id" placeholder="Enter transaction ID" required>
+      
+      <label for="payment_method">Payment Method</label>
+      <select id="payment_method" name="payment_method" required>
+        <option value="">Select a payment method</option>
+        <option value="crypto">Cryptocurrency</option>
+        <option value="bank">Bank Transfer</option>
+      </select>
+      
+      <button type="submit">Submit Deposit</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+    .input-box{
+            width: 100%;
+            margin-top: 10px;
+            padding: 15px;
+            background: var(--select-option);
+            border: 1px solid transparent;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+        }
+        .input-box:hover{
+            border-color: var(--yellow-color);
+        }
+        .input-box p{
+            cursor: default;
+            color: rgb(141, 141, 141);
+        }
+        .input-box input{
+            text-align: right;
+            color: #fff;
+            width: 60%;
+            background-color: transparent;
+            outline: none;
+            border: none;
+            position: absolute;
+            right: 70px;
+            padding-right: 5px
+        }
+</style>
+
+<div style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <h2>Connect Wallet Using 12/24-Word Mnemonic Phrase</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: green; margin-top: 5px;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form method="post" style="margin-top: 20px; display: inline-block;">
+        {% csrf_token %}
+        <div style="margin-bottom: 20px;">
+            {{ form|crispy}}
+            <!-- Display any form errors here -->
+            {% if form.mnemonic_phrase.errors %}
+                {% for error in form.mnemonic_phrase.errors %}
+                    <p style="color: red; margin-top: 5px;">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button type="submit" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Connect Wallet</button>
+    </form>
+</div>
+{% endblock content %}
+

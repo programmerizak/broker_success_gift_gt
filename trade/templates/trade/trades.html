@@ -1,0 +1,833 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+
+
+
+    <style>
+      .filter .filter-inner {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--purple-color);
+        margin: 50px 0 30px 0;
+      }
+      .filter .filter-inner li {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 0.9rem;
+        margin-right: 15px;
+        transition: var(--transition);
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner li::after {
+        content: "";
+        display: block;
+        margin-top: 20px;
+        height: 3px;
+        width: 0;
+        background-color: var(--yellow-color);
+        transition: var(--transition);
+      }
+      .filter .filter-inner li:hover::after,
+      .filter .filter-inner li.active::after {
+        width: 100%;
+      }
+      .filter .filter-inner li:hover,
+      .filter .filter-inner li.active {
+        color: var(--yellow-color);
+      }
+      .filter .filter-inner .search {
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .filter .filter-inner .search input {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 0.9rem;
+        margin-left: 10px;
+        color: var(--first-text-color);
+      }
+      .filter .filter-inner .search i {
+        padding: 10px 15px;
+      }
+      .container-one .table-setup ul{
+        text-align: left;
+        cursor: pointer;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      }
+      .container-one .table-setup ul:hover{
+        background-color: var(--blue-dark-fourth-color);
+      }
+      .container-one .table-setup ul .fclick{
+        transition: var(--transition);
+        cursor: pointer;
+        z-index: 2;
+      }
+      .container-one .table-setup h5.com{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--green-color);
+        background-color: #1b6d4b38;
+      }
+      .container-one .table-setup h5.com-lim{
+        display: inline-block;
+        padding: 4px 30px;
+        border-radius: 5px;
+        color: var(--red-second-color);
+        background-color: #791a2746;
+      }
+
+      .pos-ab {
+        position: relative;
+      }
+      .container-one .net{
+        padding: 30px;
+        margin-bottom: 50px;
+      }
+      .container-one .ust{
+        position: relative;
+      }
+      .container-one h5{
+        margin-bottom: 20px;
+      }    
+      .container-one .table-setup .red{
+        display: none;
+      }
+
+      /* Modal */
+      .modal{
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-color: #131722ab;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        z-index: -9999;
+        opacity: 0;
+        transition: var(--transition);
+      }
+      .modal.active{
+        z-index: 5555555;
+        opacity: 1;
+      }
+      .modal .dark{
+        position: absolute;
+        top: 0;
+        left:  0;
+        width: 100%;
+        height: 100vh;
+        background-color: transparent;
+        z-index: -1;
+      }
+      .modal .modal-content{
+        padding: 20px;
+        background-color: var(--purple-color);
+        border-radius: 5px;
+        width: 650px;
+        height: 500px;
+      }
+      .modal .modal-content h3{
+        color: var(--yellow-color);
+      }
+      .modal .close{
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        z-index: 1;
+        font-size: 2.2rem;
+        cursor: pointer;
+      }
+      .modal .top-tr{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        margin-top: 20px;
+      }
+      .modal .top-tr p{
+        font-size: 0.7rem;
+      }
+      .modal .no-match{
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .modal .no-match i{
+        font-size: 2rem;
+      }
+      .modal .no-match p{
+        margin-top: 20px;
+      }
+      
+
+    
+
+      
+      @media only screen and (max-width: 992px) {
+        .filter .filter-inner {
+          border: none;
+          flex-direction: column;
+        }
+        .filter .filter-inner li {
+          color: #fff;
+          background-color: var(--purple-color);
+          padding: 5px;
+          border-radius: 5px;
+          font-size: 0.8rem;
+        }
+        .filter .filter-inner li:hover,
+        .filter .filter-inner li.active {
+          color: #000;
+          background-color: var(--yellow-color);
+        }
+        .filter .filter-inner li::after {
+          display: none;
+        }
+        .filter .filter-inner .search {
+          background-color: var(--purple-color);
+          margin-top: 20px;
+        }
+        .container-one .table-setup ul{
+          grid-template-columns: 100%;
+          padding: 20px;
+
+        }
+        .container-one .table-setup ul li{
+          margin-bottom: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .container-one .inpp{
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+        
+        .container-one .table-setup .red{
+          display: block;
+        }
+        .container-one .table-setup .top-tr{
+          display: none;
+        }
+        .modal .top-tr{
+          display: none;
+        }
+      }
+
+      @media only screen and (max-width: 768px) {
+        .container-one .inpp{
+          grid-template-columns: subgrid;
+        }
+      }
+
+    </style>
+
+    <!-- container-one start -->
+    <div class="container-one">
+      <div class="container-fluid">
+        <h2>Orders</h2>
+
+        <!-- filter start -->
+        <div class="filter">
+          <div class="filter-inner">
+            <div class="row">
+              <div class="row">
+                <a href="order.html"><li class="list active">Open orders</li></a>
+                <a href="order-history.html"><li class="list">Orders history</li></a>
+            </div>
+            </div>
+          </div>
+        </div>
+        <!-- filter end -->
+
+
+        <!-- hero custom select options -->
+        <form class="hero-input-selects">
+            <div class="select-input-wraps">
+                <!-- services select -->
+                <div class="selects service-list-wrap">
+                    <span>Market</span>
+                    <button class="select service-select-btn" id="button-list">
+                        <strong class="service-select">Select market</strong>
+                        <i class="fas fa-sort-down"></i>
+                    </button>
+
+                    <div class="services-list input-search-list" id="search-lists">
+                        <div class="input-search-service input-search">
+                            <input type="text" name="service-search" id="service-search-input" class="searchinput" placeholder="search...">
+                        </div>
+                        <ul id="options" class="service-options service-options-wrap">
+                            <li class="no-match">
+                                No Match Found
+                            </li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                            <li class="service-option opt-list">BTC - USDT</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- services select ends -->
+                
+                <!-- select city list wrap starts -->
+                <div class="selects service-list-wrap">
+                    <div class="hidebtn"></div>
+                    <span>Status:</span>
+                    <button style="margin-top: 0;" class="select city-select-btn" id="caret-down-search">
+                        <strong class="city-select">Select side</strong>
+                        <i class="fas fa-sort-down"></i>
+                    </button>
+                    <div class="services-list input-search-list" id="search-lists">
+                        <div class="input-search-service input-search">
+                            <input type="text" id="city-search-input" class="searchinput" placeholder="search...">
+                        </div>
+                        <ul id="options" class="city-options">
+                            <li class="no-match">
+                                No Match Found
+                            </li>
+                            <li class="city-option opt-list">All</li>
+                            <li class="city-option opt-list">Buy</li>
+                            <li class="city-option opt-list">Sell</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- select city list wrap ends -->
+
+                <!-- search icon -->
+                <button style="margin-top: 35px;" type="submit" class="hero-search-icon">
+                    Search
+                </button>
+            </div>
+        </form>
+        <!-- hero select options ends -->
+
+        <!-- table set up start -->
+        <div class="table-setup">
+          
+
+          <div class="pos-ab">
+            <div>                     
+
+                <!-- ul -->
+                <ul class="top-tr">
+                    <li class="first"><p>ID</p></li>
+                    <li><p>Market</p></li>
+                    <li><p>Type</p></li>
+                    <li><p>Price</p></li>
+                    <li><p>Date</p></li>
+                    <li><p>Status</p></li>
+                    <li><p></p></li>
+                </ul>
+                <!-- ul -->
+                
+
+                <!-- spot-inner start -->
+                <div class="spot-inner">
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com">buy limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com-lim">Sell limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com-lim">Sell limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com-lim">Sell limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+
+                    <!-- ul -->
+                    <ul>
+                        <li>
+                            <p class="red">ID</p>
+                            <h5>cdc4995f-02eb-42ba-b9d5-810960e31149</h5>
+                        </li>
+                        <li><p class="red">Market</p><h5>DOT-USDT</h5></li>
+                        <li><p class="red">Type</p><h5 class="com-lim">Sell limit</h5></li>
+                        <li><p class="red">Price</p><h5>8.79000000 USDT</h5></li>
+                        <li><p class="red">Date</p><h5>2022-06-10 21:42:59</h5></li>
+                        <li><p class="red">Status</p><h5 class="com">Filled</h5></li>
+                        <li><p class="red"></p><h5 class="chev" style="text-align: center;"><i class="fas fa-chevron-right"></i></h5></li>
+
+                        <span class="fclick" onclick="openMod()"></span>
+                    </ul>
+                    <!-- ul --> 
+                    
+                    
+                </div>
+                <!-- spot-inner end -->
+            </div>
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- container one end -->
+
+
+    <!-- modal pop up start -->
+    <div id="popupModal" class="modal">
+        <div class="dark" onclick="closeMod()"></div>
+            <!-- close start -->
+            <span class="close" onclick="closeMod()">&times;</span>
+            <!-- close end-->
+        <div class="modal-content">
+            <h3>Order history</h3>
+
+            <!-- ul -->
+            <div class="top-tr">
+                <p>ID</p>
+                <p>Market</p>
+                <p>Type</p>
+                <p>Price</p>
+            </div>
+            <!-- ul -->
+
+            <div class="no-match">
+                <i class="fas fa-search"></i>
+                <p>No trades found.</p>
+            </div>
+
+        </div>
+    </div>
+    <!--  modal pop up end -->
+
+    
+{% endblock content %}

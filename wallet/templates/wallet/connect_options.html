@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<style>
+    .deposit-options {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .deposit-inner{
+        margin-top: 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+
+    .option {
+        border: 1px solid var(--blue-dark-fourth-color);
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+        max-width: 400px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;  /* Center align the content */
+    }
+
+    .option h3 {
+        margin-top: 0;
+    }
+
+    .option p {
+        margin-bottom: 10px;
+    }
+
+    .option button {
+        padding: 10px 20px;
+        background-color: var(--yellow-color);
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .option button:hover {
+        background-color: #0056b3; /* Darker shade of blue on hover */
+    }
+
+    .option button {
+        padding: 10px 20px;
+        background-color: #007bff; /* Blue color */
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: block;
+        margin: 25px auto 0 auto; /* This centers the button */
+    }
+
+    @media only screen and (max-width: 768px){
+        .deposit-inner{
+            grid-template-columns: subgrid;
+        }
+
+    } 
+</style>
+
+<div class="deposit-options">
+    <div class="container-fluid">
+        <h2>Connection Options</h2>
+        <div class="deposit-inner">
+
+
+            <div class="option">
+                <h3>Connect Automatically </h3>
+                <p>Automatically connect an external wallet to your Account </p>
+                <button id="connect-button">Connect Automatically</button>
+                <p id="wallet-address"></p>
+            </div>
+
+    <!-- Include web3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <!-- Include SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+        async function connectWallet() {
+            if (window.ethereum) {
+                const web3 = new Web3(window.ethereum);
+                try {
+                    await window.ethereum.enable();
+                    const accounts = await web3.eth.getAccounts();
+                    document.getElementById('wallet-address').innerText = `Connected Wallet: ${accounts[0]}`;
+                    
+                    // Send the address to the backend
+                    await fetch("{% url 'wallet:connect_wallet' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ wallet_address: accounts[0] })
+                    });
+
+                    // Display a SweetAlert message
+                    Swal.fire({
+                        title: 'Wallet Connected!',
+                        text: 'Your wallet has been successfully connected.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+
+                    // Change the button text
+                    document.getElementById('connect-button').innerText = 'Wallet Connected';
+                    // Disable the button to prevent re-connection
+                    document.getElementById('connect-button').disabled = true;
+                } catch (error) {
+                    console.error("User denied account access", error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Wallet connection failed. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            } else {
+                Swal.fire({
+                    title: 'MetaMask Not Found',
+                    text: 'Please install MetaMask to connect your wallet.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
+
+        document.getElementById('connect-button').addEventListener('click', connectWallet);
+    </script>
+
+
+            <div class="option">
+                <h3>Connect Manually </h3>
+                <p>Manually connect an external wallet to your Account using Key phrase</p>
+                <a href="{% url 'wallet:connect_manually' %}">
+                    <button>Connect Manually</button>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
