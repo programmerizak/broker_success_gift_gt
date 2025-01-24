@@ -6,7 +6,7 @@ from .models import User
 from .forms import UserEditForm
 from wallet.models import Wallet
 from decimal import Decimal
-from wallet.tasks import run_check_trades
+# from wallet.tasks import run_check_trades
 
 """Views that can only be access by verified email users """
 # from allauth.account.decorators import verified_email_required
@@ -28,7 +28,7 @@ def dashboard(request):
 	context['user'] = user
 	wallets = Wallet.objects.filter(user=user)
 	# Trigger the Celery task
-	run_check_trades.delay()
+	# run_check_trades.delay()
 	context['wallets'] = wallets
 	
 	# Fetch real-time cryptocurrency prices
