@@ -29,7 +29,7 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 # b4 running the following commands make sure your virtualenv is activated
 
-#Start the Celery Worker(shared task):
+#Start the Celery Worker(shared task/Assychronous/simultaneous):
 #celery -A website worker --loglevel=info
 
 #Start the Celery Beat Scheduler(For Periodic Task, run every 2Hours):

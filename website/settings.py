@@ -546,26 +546,27 @@ from datetime import timedelta
 # Celery settings
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'#without password
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'#without password
-CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = env.str("CELERY_RESULT_BACKEND")
+CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")# Use Redis as broker
+CELERY_RESULT_BACKEND = env.str("CELERY_RESULT_BACKEND")# Redis backend for storing task results
 CELERY_TIMEZONE = 'UTC'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 
-CELERY_BEAT_SCHEDULE = {
-    # 'test-celery-for-me': {
-    #     'task': 'wallet.tasks.my_task',
-    #     'schedule': timedelta(seconds=5),  # Run every 5 minutes
-    # },
-    # 'monitor-deposits-every-5-minutes': {
-    #     'task': 'wallet.tasks.monitor_deposits',
-    #     'schedule': timedelta(minutes=1),  # Run every 1 minutes
-    # },
-    # 'checks-trades-every-hour': {
-    #     'task': 'wallet.tasks.run_check_trades',
-    #     # 'schedule': timedelta(hours=1),  # Run every hour
-    #     'schedule': timedelta(minutes=5),  # Run every 5 minutes
-    # },
-}
+### SINCE AM NOT USING CELERY BEAT NO NEED FOR THIS
+# CELERY_BEAT_SCHEDULE = {
+#     # 'test-celery-for-me': {
+#     #     'task': 'wallet.tasks.my_task',
+#     #     'schedule': timedelta(seconds=5),  # Run every 5 minutes
+#     # },
+#     # 'monitor-deposits-every-5-minutes': {
+#     #     'task': 'wallet.tasks.monitor_deposits',
+#     #     'schedule': timedelta(minutes=1),  # Run every 1 minutes
+#     # },
+#     # 'checks-trades-every-hour': {
+#     #     'task': 'wallet.tasks.run_check_trades',
+#     #     # 'schedule': timedelta(hours=1),  # Run every hour
+#     #     'schedule': timedelta(minutes=5),  # Run every 5 minutes
+#     # },
+# }

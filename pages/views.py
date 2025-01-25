@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from wallet.tasks import my_task
 from django.core.mail import send_mail
 from django.conf import settings
-# from wallet.tasks import run_check_trades
+from wallet.tasks import run_check_trades
 
 # # Send an email
 # def send_test_email():
@@ -23,7 +23,7 @@ def home_page(request):
 	context['page_title'] = page_title
 	# send_test_email()
 	# Trigger the Celery task
-	# run_check_trades.delay()
+	run_check_trades.delay()
 	return render(request, 'pages/home_page.html',context)
 
 

@@ -19,5 +19,5 @@ class Command(BaseCommand):
             else:
                 trade.trade_status = 'lost'
             trade.save()
-
+        # print("THE FEAR OF THE LORD IS THE BEGINNING OF WISDOM S")
         self.stdout.write(self.style.SUCCESS('Successfully checked trade statuses and updated wallet balances.'))

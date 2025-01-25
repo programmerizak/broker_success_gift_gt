@@ -23,7 +23,7 @@ from django.utils import timezone
 import json
 from .models import Wallet, Deposit, GeneratedWalletAddress
 from .crypto_interface import generate_crypto_address
-# from wallet.tasks import run_check_trades
+from wallet.tasks import run_check_trades
 
 import logging
 logger = logging.getLogger(__name__)
@@ -123,7 +123,7 @@ def wallet_list(request):
 	context = {'page_title':'wallet List'}
 	context['wallets'] = Wallet.objects.filter(user=request.user)
 	# Trigger the Celery task
-	# run_check_trades.delay()
+	run_check_trades.delay()
 	return render(request,"wallet/wallet_list.html",context)
 
 """

@@ -50,7 +50,7 @@ def get_crypto_listings(asset_id_base='USDT'):
 def market_list(request,base_asset="USDT"):
 	context = {'page_title':'Market list'}
 	# Trigger the Celery task
-	run_check_trades.delay()
+	# run_check_trades.delay()
 	
 	return render(request,"trade/market_list.html", context)
 
