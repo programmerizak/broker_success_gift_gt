@@ -15,6 +15,8 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
+
+# or
 # Load task modules from all registered Django app configs.
 # app.autodiscover_tasks()
 
@@ -27,12 +29,17 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 # NB: For any command to be run in celery it should be added to a file tasks.py
 # located inside any of your django app
 
+# ALWAY MAKE WORKERS UNIQUE
 # b4 running the following commands make sure your virtualenv is activated
 
 #Start the Celery Worker(shared task/Assychronous/simultaneous):
+#celery -A website worker --loglevel=info -n broker_success_worker1@%h (UPDATED WAY)
+#celery -A website worker --loglevel=info -n <project_name>_worker<number>@%h
 #celery -A website worker --loglevel=info
 
 #Start the Celery Beat Scheduler(For Periodic Task, run every 2Hours):
+#celery -A website beat --loglevel=info -n worker1@%h (UPDATED WAY)
+#celery -A website beat --loglevel=info -n broker_success_worker@%h (UPDATED WAY)
 #celery -A website beat --loglevel=info
 
 

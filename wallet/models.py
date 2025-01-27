@@ -31,7 +31,7 @@ class Wallet(models.Model):
     # A user cannnot have same currency in wallet
     class Meta:
         unique_together = ['user','currency']
-
+        ordering = ['user__username',]
 
     def deposit_url(self):
         return reverse('wallet:deposit_options',args=[self.currency.symbol])
