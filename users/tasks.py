@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 """When a new currency is created, create currency wallet for every user"""
-@shared_task
+# @shared_task
 def create_wallets_for_currency(currency_id):
     currency = Currency.objects.get(id=currency_id)
     users = User.objects.all()
@@ -27,7 +27,7 @@ def create_wallets_for_currency(currency_id):
 """
 This signal create Coin/Currency wallet for any new user 
 """
-@shared_task
+# @shared_task
 def create_wallets_for_user(user_id):
     user = User.objects.get(id=user_id)  # Get the user instance
     currencies = Currency.objects.all()

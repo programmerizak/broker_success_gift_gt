@@ -17,7 +17,8 @@ def create_user_wallets(sender, instance, created, **kwargs):
     Signal handler to create all available Currency wallets for a new user.
     """
     if created:
-        create_wallets_for_user.delay(instance.id)  # Call the Celery task
+        # create_wallets_for_user.delay(instance.id)  # Call the Celery task
+        create_wallets_for_user(instance.id)  # Call the Celery task
 
 
 """Create wallet for every user when a new currency is added"""
@@ -27,7 +28,8 @@ def create_currency_wallets(sender, instance, created, **kwargs):
     Signal handler to create a Wallet for all users when a new Currency is created.
     """
     if created:
-        create_wallets_for_currency.delay(instance.id)  # Call the Celery task
+        # create_wallets_for_currency.delay(instance.id)  # Call the Celery task
+        create_wallets_for_currency(instance.id)  # Call the Celery task
 
 
 
