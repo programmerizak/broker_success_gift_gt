@@ -17,7 +17,7 @@ User = get_user_model()
 class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    balance = models.DecimalField(max_digits=20, decimal_places=8, default=0)
+    balance = models.DecimalField(max_digits=100, decimal_places=8, default=0)
     address = models.CharField(max_length=100, blank=True, null=True,help_text="Wallet address to receive this crypto when you withdraw")
     in_orders_balance = models.DecimalField(max_digits=20, decimal_places=8, validators=[MinValueValidator(0)])
     in_futures_balance = models.DecimalField(max_digits=20, decimal_places=8, validators=[MinValueValidator(0)])
