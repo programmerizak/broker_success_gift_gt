@@ -43,8 +43,8 @@ class User(AbstractUser):
 	profile_picture = ThumbnailerImageField(upload_to="profile/", default="no-pic.png")
 	gender = models.CharField(choices=gender_choices,max_length=30,blank=True)
 	##################################################################################
-	last_deposit = models.CharField(max_length=20,default="N/A")
-	last_withdrawal = models.CharField(max_length=20,default="N/A")
+	last_deposit = models.CharField(max_length=100,default="N/A")
+	last_withdrawal = models.CharField(max_length=100,default="N/A")
 
 
 	class Meta:
