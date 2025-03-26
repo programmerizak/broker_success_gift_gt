@@ -1,8 +1,6 @@
 from django.urls import path
 from . import views
 
-
-
 app_name = "pages"
 
 urlpatterns = [
@@ -12,3 +10,5 @@ urlpatterns = [
 	path('terms-conditions/', views.terms_page, name='terms_page'),
 	path('privacy-policy/', views.privacy_page, name='privacy_page'),
 ]
+
+
