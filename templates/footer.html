@@ -34,7 +34,7 @@
                         {% else %}
                         Sign up and get started today.</p>
                 </div>
-                            <a href="{% url 'trade:place_a_trade' %}"><button>Get Access</button></a>
+                            <a href="{% url 'pages:contact_page' %}"><button>Contact Us</button></a>
                         {% endif %}
 
             </div>
@@ -79,8 +79,9 @@
  -->
 
             <div class="footer-4">
-                <p>Trade xSphere © {% now "Y" %}
-</p>
+                <p>Trade xSphere © {% now "Y" %}    |  <a href="{% url 'pages:contact_page' %}">Contact us</a></p>
+                
+
             </div>
             
         </div>
